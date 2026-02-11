@@ -1,0 +1,14 @@
+
+/* Page Transitions */
+html {
+    background-color: var(--color-back-black-sections);
+}
+
+body {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+body.page-loaded {
+    opacity: 1;
+}

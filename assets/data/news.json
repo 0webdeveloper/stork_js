@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "date": "01.10.2023",
+        "title": "Новость №1",
+        "description": "Lorem ipsum dolor sit amet consectetur...",
+        "content": "Full content here..."
+    },
+    {
+        "id": 2,
+        "date": "01.10.2023",
+        "title": "Новость №2",
+        "description": "Lorem ipsum dolor sit amet consectetur...",
+        "content": "Full content here..."
+    },
+    {
+        "id": 3,
+        "date": "01.10.2023",
+        "title": "Новость №3",
+        "description": "Lorem ipsum dolor sit amet consectetur...",
+        "content": "Full content here..."
+    }
+]

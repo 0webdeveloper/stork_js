@@ -1,0 +1,40 @@
+# Git directory
+.git/
+
+# ZIP archives
+*.zip
+
+# Compiled files and build directories
+dist/
+build/
+*.exe
+*.bin
+
+# Dependencies
+node_modules/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.production
+*.key
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Cache directories
+.cache/
+tmp/
+temp/

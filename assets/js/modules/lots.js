@@ -216,13 +216,44 @@ export class LotsModule {
 
     createCardHtml(card) {
         // Handle images
-        let imageSrc = '/assets/image/placeholder.jpg';
+        let imageHtml = '';
+        const images = [];
+        const title = this.formatTitle(card.name || card.category?.current_name || '');
+
+        // Collect images
         if (card.pictures && card.pictures.length > 0) {
-            const firstPic = card.pictures[0];
-            imageSrc = firstPic.name === 'default_image.jpg' ? '/storage/static/default_image.jpg' : firstPic.path;
+             card.pictures.forEach(p => {
+                 if (p.gallery) images.push(p.gallery);
+                 else if (p.path) images.push(p.path);
+             });
+        }
+        
+        if (images.length === 0) {
+            images.push('/storage/static/default_image.jpg');
         }
 
-        const title = this.formatTitle(card.name || card.category?.current_name || '');
+        if (images.length > 1) {
+            // Slider
+            const slides = images.map(src => `<div class="w-full h-full shrink-0"><img src="${src}" class="w-full h-full object-cover"></div>`).join('');
+            imageHtml = `
+                <div class="relative w-full h-full group slider-container" data-current-index="0" data-total="${images.length}">
+                    <div class="slider-track flex w-full h-full transition-transform duration-300 ease-out" style="transform: translateX(0%);">
+                        ${slides}
+                    </div>
+                    <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-sm" type="button">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-sm" type="button">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                    <div class="absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/50 px-2 py-0.5 rounded-full text-white text-[10px]">
+                        1/${images.length}
+                    </div>
+                </div>
+            `;
+        } else {
+            imageHtml = `<img src="${images[0]}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="${title}">`;
+        }
         
         // Area
         let areaText = '';
@@ -257,15 +288,24 @@ export class LotsModule {
             </div>
         ` : '';
 
+        // Abbreviation
+        const abbreviation = card.abbreviation || (card.category ? card.category.abbreviation : '') || '';
+        const abbrHtml = abbreviation ? `
+            <div class="bg-[#902F2F] py-0.5 px-3 text-white rounded self-start text-sm font-bold uppercase mb-2 inline-block">
+                ${abbreviation}
+            </div>
+        ` : '';
+
         return `
             <div class="bg-white p-5 rounded-lg relative group cursor-pointer hover:shadow-xl transition-all duration-300">
                 ${statusHtml}
-                <div class="mb-5 relative aspect-[4/5] rounded-xl overflow-hidden bg-gray-200">
-                    <img src="${imageSrc}" alt="${title}" class="w-full h-full object-cover object-center absolute top-0 left-0 transition-transform duration-500 group-hover:scale-105">
+                <div class="mb-5 relative aspect-[3/2.5] rounded-xl overflow-hidden bg-gray-200">
+                    ${imageHtml}
                 </div>
 
                 <div class="flex items-start justify-between gap-4 flex-wrap">
                     <div class="flex flex-col gap-2.5">
+                        ${abbrHtml}
                         <p class="font-unbounded text-2xl text-black leading-tight">${title}</p>
                         <p class="text-sm font-semibold text-gray-600">
                             ${areaText} m²
@@ -280,7 +320,7 @@ export class LotsModule {
                 </div>
                 
                 <!-- Link Overlay -->
-                <a href="../lots/detail.html?id=${card.id}" class="absolute inset-0 z-10"></a>
+                <a href="../lots/detail.html?id=${card.id}" class="absolute inset-0 z-10" onclick="if(event.target.closest('.slider-prev, .slider-next')) event.preventDefault();"></a>
             </div>
         `;
     }

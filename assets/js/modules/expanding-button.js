@@ -32,6 +32,18 @@ export class ExpandingButtonModule {
                 this.close();
             }
         });
+
+        // Event delegation for slider navigation
+        document.addEventListener('click', (e) => {
+            const prevBtn = e.target.closest('.slider-prev');
+            const nextBtn = e.target.closest('.slider-next');
+            
+            if (prevBtn) {
+                this.handleSliderNav(prevBtn, -1);
+            } else if (nextBtn) {
+                this.handleSliderNav(nextBtn, 1);
+            }
+        });
     }
 
     async handleButtonClick(e) {
@@ -137,9 +149,9 @@ export class ExpandingButtonModule {
             
             headerContainer.innerHTML = `
                 <img src="${bgImage}" class="w-full h-full object-cover" alt="Block Image">
-                <div class="absolute inset-0 bg-black/40 p-4 md:p-12 flex flex-col justify-end text-white">
-                    <div class="bg-white text-black text-xs md:text-sm font-bold px-3 py-1 rounded-full w-max mb-4">Блок ${block.title}</div>
-                    <h3 class="font-unbounded text-xl md:text-3xl lg:text-4xl uppercase max-w-4xl leading-tight">${block.description || ''}</h3>
+                <div class="absolute inset-0 bg-black/40 p-4 md:p-12 flex flex-col justify-start text-white">
+                    <div class="bg-white text-black text-xs md:text-sm font-bold px-3 py-1 rounded-full w-max mb-4">Блок ${block.title} • ${floors ? floors.length : 0} этажей</div>
+                    <h3 class="font-unbounded text-xl md:text-3xl lg:text-4xl uppercase max-w-4xl leading-tight">Высоколиквидные инвестиции. Пространство для комфортного проживания</h3>
                 </div>
             `;
         }
@@ -157,8 +169,8 @@ export class ExpandingButtonModule {
             const firstBtn = floorsContainer.querySelector(`button[data-floor="${firstAvailableFloor.idx}"]`);
             if (firstBtn) {
                  // Reset others
-                 floorsContainer.querySelectorAll('button').forEach(b => {
-                    b.className = 'w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm md:text-base font-medium transition-colors shrink-0 bg-gray-100 text-gray-400 hover:bg-gray-200';
+                 floorsContainer.querySelectorAll('button:not(:disabled)').forEach(b => {
+                    b.className = 'w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm md:text-base font-medium transition-colors shrink-0 bg-gray-100 text-gray-400 hover:bg-gray-200 cursor-pointer';
                 });
                 firstBtn.className = 'w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm md:text-base font-medium transition-colors shrink-0 bg-black text-white';
             }
@@ -176,10 +188,11 @@ export class ExpandingButtonModule {
             floorBtn.setAttribute('data-floor', floor.idx);
             
             // Initial styling (inactive by default)
-            floorBtn.className = `w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm md:text-base font-medium transition-colors shrink-0 bg-gray-100 text-gray-400 hover:bg-gray-200`;
+            floorBtn.className = `w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm md:text-base font-medium transition-colors shrink-0 bg-gray-100 text-gray-400 hover:bg-gray-200 cursor-pointer`;
             
             if (floor.count === 0) {
-                floorBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                floorBtn.classList.remove('hover:bg-gray-200');
+                floorBtn.classList.add('opacity-50');
                 floorBtn.disabled = true;
             }
 
@@ -189,8 +202,8 @@ export class ExpandingButtonModule {
                 if (floor.count === 0) return;
 
                 // Update active state
-                container.querySelectorAll('button').forEach(b => {
-                    b.className = 'w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm md:text-base font-medium transition-colors shrink-0 bg-gray-100 text-gray-400 hover:bg-gray-200';
+                container.querySelectorAll('button:not(:disabled)').forEach(b => {
+                    b.className = 'w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm md:text-base font-medium transition-colors shrink-0 bg-gray-100 text-gray-400 hover:bg-gray-200 cursor-pointer';
                 });
                 floorBtn.className = 'w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-sm md:text-base font-medium transition-colors shrink-0 bg-black text-white';
                 
@@ -213,14 +226,14 @@ export class ExpandingButtonModule {
 
         try {
             const categories = await this.fetchCategoriesData(blockId, floorIdx);
-            this.renderCategories(container, categories, floorIdx);
+            this.renderCategories(container, categories, floorIdx, blockId);
         } catch (error) {
             console.error(error);
             container.innerHTML = '<div class="text-red-500 p-4">Ошибка загрузки данных</div>';
         }
     }
 
-    renderCategories(container, categories, floorIdx) {
+    renderCategories(container, categories, floorIdx, blockId) {
         if (!categories || categories.length === 0) {
             container.innerHTML = `
                 <div class="h-full flex items-center justify-center text-gray-400">
@@ -236,13 +249,45 @@ export class ExpandingButtonModule {
         `;
 
         categories.forEach(cat => {
-            // Get image
-            let imagePath = '/storage/static/default_image.jpg';
+            // Get images (prefer gallery property as requested)
+            const images = [];
             if (cat.pictures && cat.pictures.length > 0) {
-                // Try to find one with path
-                const pic = cat.pictures.find(p => p.path) || cat.pictures[0];
-                if (pic && pic.path) imagePath = pic.path;
-                else if (pic && pic.gallery) imagePath = pic.gallery;
+                cat.pictures.forEach(p => {
+                    if (p.gallery) {
+                        images.push(p.gallery);
+                    }
+                });
+            }
+            
+            // Fallback image if no gallery images found
+            if (images.length === 0) {
+                images.push('/storage/static/default_image.jpg');
+            }
+
+            // Image Area HTML
+            let imageHtml = '';
+            if (images.length > 1) {
+                // Slider
+                const slides = images.map(src => `<div class="w-full h-full shrink-0"><img src="${src}" class="w-full h-full object-cover"></div>`).join('');
+                imageHtml = `
+                    <div class="relative w-full h-full group slider-container" data-current-index="0" data-total="${images.length}">
+                        <div class="slider-track flex w-full h-full transition-transform duration-300 ease-out" style="transform: translateX(0%);">
+                            ${slides}
+                        </div>
+                        <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-sm" type="button">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        </button>
+                        <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-sm" type="button">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/50 px-2 py-0.5 rounded-full text-white text-[10px]">
+                            1/${images.length}
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Single Image
+                imageHtml = `<img src="${images[0]}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="${cat.name || 'Лот'}">`;
             }
 
             // Area text
@@ -257,25 +302,83 @@ export class ExpandingButtonModule {
             const name = cat.name || cat.current_name || 'Лот';
             const formattedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 
+            // Status Badge
+            const statusName = cat.status?.name || '';
+            const isSold = statusName.toLowerCase().includes('продан');
+            const statusHtml = statusName ? `
+                <div class="absolute top-4 right-4 z-20 px-3 py-1 rounded text-xs font-bold uppercase tracking-wider ${isSold ? 'bg-gray-800 text-white' : 'bg-red-600 text-white'}">
+                    ${statusName}
+                </div>
+            ` : '';
+
+            // Abbreviation
+            const abbreviation = cat.abbreviation || (cat.category ? cat.category.abbreviation : '') || '';
+            const abbrHtml = abbreviation ? `
+                <div class="bg-[#902F2F] py-0.5 px-3 text-white rounded self-start text-sm font-bold uppercase mb-2 inline-block">
+                    ${abbreviation}
+                </div>
+            ` : '';
+
+            // Block ID
+            const currentBlockId = blockId || (cat.block ? cat.block.name : '');
+
             html += `
-                <div class="bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow border border-gray-100">
-                    <div class="aspect-[4/3] rounded-xl overflow-hidden mb-4 bg-gray-100 relative">
-                        <img src="${imagePath}" class="w-full h-full object-cover" alt="${formattedName}">
+                <div class="bg-white p-5 rounded-lg relative group cursor-pointer hover:shadow-xl transition-all duration-300">
+                    ${statusHtml}
+                    <div class="mb-5 relative aspect-[3/2.5] rounded-xl overflow-hidden bg-gray-200">
+                        ${imageHtml}
                     </div>
-                    <div class="mb-2">
-                        <h5 class="font-bold text-lg leading-tight">${formattedName}</h5>
+
+                    <div class="flex items-start justify-between gap-4 flex-wrap">
+                        <div class="flex flex-col gap-2.5">
+                            ${abbrHtml}
+                            <p class="font-unbounded text-2xl text-black leading-tight">${formattedName}</p>
+                            <p class="text-sm font-semibold text-gray-600">
+                                ${areaText} m²
+                            </p>
+                        </div>
+                        <div class="text-left">
+                            <p class="font-bold text-black">
+                                ${floorIdx} этаж
+                            </p>
+                            <p class="text-sm text-gray-400 font-medium">блок ${currentBlockId}</p>
+                        </div>
                     </div>
-                    <div class="text-sm text-gray-500 mb-4">${areaText} m²</div>
                     
-                    <div class="mt-auto pt-4 border-t border-gray-100">
-                         <div class="text-xs text-gray-400 mb-1">${floorIdx} этаж</div>
-                    </div>
+                    <!-- Link Overlay -->
+                    <a href="lots/detail.html?id=${cat.id}" class="absolute inset-0 z-10" onclick="if(event.target.closest('.slider-prev, .slider-next')) event.preventDefault();"></a>
                 </div>
             `;
         });
 
         html += '</div>';
         container.innerHTML = html;
+    }
+
+    handleSliderNav(btn, direction) {
+        const container = btn.closest('.slider-container');
+        if (!container) return;
+
+        const track = container.querySelector('.slider-track');
+        let currentIndex = parseInt(container.getAttribute('data-current-index') || '0');
+        const total = parseInt(container.getAttribute('data-total') || '1');
+
+        currentIndex += direction;
+
+        if (currentIndex < 0) currentIndex = total - 1;
+        if (currentIndex >= total) currentIndex = 0;
+
+        container.setAttribute('data-current-index', currentIndex);
+        
+        if (track) {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        // Update counter if exists
+        const counter = container.querySelector('.absolute.bottom-2');
+        if (counter) {
+            counter.textContent = `${currentIndex + 1}/${total}`;
+        }
     }
 
     centerToButton(btn) {

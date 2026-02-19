@@ -215,16 +215,13 @@ export class LotsModule {
     }
 
     createCardHtml(card) {
-        // Handle images
         let imageHtml = '';
         const images = [];
         const title = this.formatTitle(card.name || card.category?.current_name || '');
 
-        // Collect images
         if (card.pictures && card.pictures.length > 0) {
              card.pictures.forEach(p => {
                  if (p.gallery) images.push(p.gallery);
-                 else if (p.path) images.push(p.path);
              });
         }
         
@@ -240,10 +237,10 @@ export class LotsModule {
                     <div class="slider-track flex w-full h-full transition-transform duration-300 ease-out" style="transform: translateX(0%);">
                         ${slides}
                     </div>
-                    <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-sm" type="button">
+                    <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 shadow-sm" type="button">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                     </button>
-                    <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-sm" type="button">
+                    <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 shadow-sm" type="button">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
                     <div class="absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/50 px-2 py-0.5 rounded-full text-white text-[10px]">
@@ -255,7 +252,6 @@ export class LotsModule {
             imageHtml = `<img src="${images[0]}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="${title}">`;
         }
         
-        // Area
         let areaText = '';
         if (card.min_area == card.max_area) {
             areaText = card.min_area;
@@ -265,7 +261,6 @@ export class LotsModule {
             areaText = `${card.min_area || card.area} - ${card.max_area}`;
         }
 
-        // Floor
         let floorText = '';
         if (card.requestCurrentFloor) {
             floorText = card.requestCurrentFloor;
@@ -275,11 +270,9 @@ export class LotsModule {
             floorText = `${card.min_floor || card.floor} - ${card.max_floor}`;
         }
         
-        // Blocks
         const blocks = Array.isArray(card.blocks) ? card.blocks : (card.block ? [card.block] : []);
         const blocksHtml = blocks.map(b => `<p class="text-sm text-gray-400 font-medium">блок ${b.name}</p>`).join('');
 
-        // Status Badge (optional, but good for context)
         const statusName = card.status?.name || '';
         const isSold = statusName.toLowerCase().includes('продан');
         const statusHtml = statusName ? `
@@ -288,13 +281,14 @@ export class LotsModule {
             </div>
         ` : '';
 
-        // Abbreviation
         const abbreviation = card.abbreviation || (card.category ? card.category.abbreviation : '') || '';
         const abbrHtml = abbreviation ? `
             <div class="bg-[#902F2F] py-0.5 px-3 text-white rounded self-start text-sm font-bold uppercase mb-2 inline-block">
                 ${abbreviation}
             </div>
         ` : '';
+
+        const categoryId = card.category_id || card.category?.id || card.id;
 
         return `
             <div class="bg-white p-5 rounded-lg relative group cursor-pointer hover:shadow-xl transition-all duration-300">
@@ -319,8 +313,7 @@ export class LotsModule {
                     </div>
                 </div>
                 
-                <!-- Link Overlay -->
-                <a href="../lots/detail.html?id=${card.id}" class="absolute inset-0 z-10" onclick="if(event.target.closest('.slider-prev, .slider-next')) event.preventDefault();"></a>
+                <a href="../lots/detail.html?category_id=${categoryId}" class="absolute inset-0 z-10" onclick="if(event.target.closest('.slider-prev, .slider-next')) event.preventDefault();"></a>
             </div>
         `;
     }

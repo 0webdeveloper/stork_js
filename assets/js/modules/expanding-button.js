@@ -249,7 +249,6 @@ export class ExpandingButtonModule {
         `;
 
         categories.forEach(cat => {
-            // Get images (prefer gallery property as requested)
             const images = [];
             if (cat.pictures && cat.pictures.length > 0) {
                 cat.pictures.forEach(p => {
@@ -259,25 +258,22 @@ export class ExpandingButtonModule {
                 });
             }
             
-            // Fallback image if no gallery images found
             if (images.length === 0) {
                 images.push('/storage/static/default_image.jpg');
             }
 
-            // Image Area HTML
             let imageHtml = '';
             if (images.length > 1) {
-                // Slider
                 const slides = images.map(src => `<div class="w-full h-full shrink-0"><img src="${src}" class="w-full h-full object-cover"></div>`).join('');
                 imageHtml = `
                     <div class="relative w-full h-full group slider-container" data-current-index="0" data-total="${images.length}">
                         <div class="slider-track flex w-full h-full transition-transform duration-300 ease-out" style="transform: translateX(0%);">
                             ${slides}
                         </div>
-                        <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-sm" type="button">
+                        <button class="slider-prev absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 shadow-sm" type="button">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                         </button>
-                        <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-sm" type="button">
+                        <button class="slider-next absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-black w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 shadow-sm" type="button">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </button>
                         <div class="absolute bottom-2 left-1/2 -translate-x-1/2 bg-black/50 px-2 py-0.5 rounded-full text-white text-[10px]">
@@ -286,11 +282,9 @@ export class ExpandingButtonModule {
                     </div>
                 `;
             } else {
-                // Single Image
                 imageHtml = `<img src="${images[0]}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="${cat.name || 'Лот'}">`;
             }
 
-            // Area text
             let areaText = '';
             if (parseFloat(cat.min_area) === parseFloat(cat.max_area)) {
                 areaText = `${cat.min_area}`;
@@ -298,11 +292,9 @@ export class ExpandingButtonModule {
                 areaText = `${cat.min_area} - ${cat.max_area}`;
             }
 
-            // Name formatting
             const name = cat.name || cat.current_name || 'Лот';
             const formattedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 
-            // Status Badge
             const statusName = cat.status?.name || '';
             const isSold = statusName.toLowerCase().includes('продан');
             const statusHtml = statusName ? `
@@ -311,7 +303,6 @@ export class ExpandingButtonModule {
                 </div>
             ` : '';
 
-            // Abbreviation
             const abbreviation = cat.abbreviation || (cat.category ? cat.category.abbreviation : '') || '';
             const abbrHtml = abbreviation ? `
                 <div class="bg-[#902F2F] py-0.5 px-3 text-white rounded self-start text-sm font-bold uppercase mb-2 inline-block">
@@ -319,8 +310,8 @@ export class ExpandingButtonModule {
                 </div>
             ` : '';
 
-            // Block ID
             const currentBlockId = blockId || (cat.block ? cat.block.name : '');
+            const categoryId = cat.category_id || cat.category?.id || cat.id;
 
             html += `
                 <div class="bg-white p-5 rounded-lg relative group cursor-pointer hover:shadow-xl transition-all duration-300">
@@ -345,8 +336,7 @@ export class ExpandingButtonModule {
                         </div>
                     </div>
                     
-                    <!-- Link Overlay -->
-                    <a href="lots/detail.html?id=${cat.id}" class="absolute inset-0 z-10" onclick="if(event.target.closest('.slider-prev, .slider-next')) event.preventDefault();"></a>
+                    <a href="lots/detail.html?category_id=${categoryId}" class="absolute inset-0 z-10" onclick="if(event.target.closest('.slider-prev, .slider-next')) event.preventDefault();"></a>
                 </div>
             `;
         });

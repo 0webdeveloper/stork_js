@@ -213,19 +213,19 @@
         import { fetchApi } from '../assets/js/modules/state.js';
 
         const params = new URLSearchParams(window.location.search);
-        const id = params.get('id');
+        const lotId = params.get('id');
+        const categoryId = params.get('category_id');
 
         async function loadLot() {
             const container = document.getElementById('lot-detail');
             
-            if (!id) {
+            if (!lotId) {
                 container.innerHTML = '<div class="text-center py-20"><p class="text-2xl">Лот не найден</p><a href="index.html" class="text-red-500 hover:underline mt-4 inline-block">Перейти к списку лотов</a></div>';
                 return;
             }
 
             try {
-                // Fetch lot details
-                const data = await fetchApi('/lots/', { id: id });
+                const data = await fetchApi('/lots/', { id: lotId });
                 
                 if (data && data.data && data.data.length > 0) {
                     const lot = data.data[0];
@@ -236,6 +236,47 @@
             } catch(e) {
                 console.error(e);
                 container.innerHTML = '<div class="text-center py-20"><p class="text-red-500 text-xl">Ошибка загрузки данных</p></div>';
+            }
+        }
+
+        async function loadLayouts() {
+            const container = document.getElementById('lot-detail');
+            
+            if (!categoryId) {
+                loadLot();
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="animate-pulse bg-gray-800 h-10 w-3/4 rounded"></div>
+                    <div class="animate-pulse bg-gray-800 h-6 w-1/2 rounded"></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="aspect-[4/5] bg-gray-800 animate-pulse rounded-lg"></div>
+                        <div class="aspect-[4/5] bg-gray-800 animate-pulse rounded-lg"></div>
+                        <div class="aspect-[4/5] bg-gray-800 animate-pulse rounded-lg"></div>
+                    </div>
+                </div>
+            `;
+
+            try {
+                const [categoryInfo, decorations, associates, lotsResponse] = await Promise.all([
+                    fetchApi('/categories/info', { category_id: categoryId }),
+                    fetchApi('/decorations'),
+                    fetchApi('/categories/associate', { id: categoryId }),
+                    fetchApi('/lots/', { category_id: categoryId, page: 1 })
+                ]);
+
+                const lots = lotsResponse && Array.isArray(lotsResponse.data) ? lotsResponse.data : [];
+                renderLayoutsPage(container, {
+                    categoryInfo,
+                    decorations,
+                    associates,
+                    lots
+                });
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = '<div class="text-center py-20"><p class="text-red-500 text-xl">Ошибка загрузки схем планировок</p></div>';
             }
         }
 
@@ -298,13 +339,220 @@
                 </div>
             `;
             
-            // Initialize Gallery
             if (lot.pictures && lot.pictures.length > 0) {
                 new Gallery('lot-gallery', lot.pictures);
             } else {
-                // Fallback image
                  new Gallery('lot-gallery', [{ name: 'placeholder', path: '/assets/image/placeholder.jpg' }]);
             }
+        }
+
+        function renderLayoutsPage(container, data) {
+            const info = data && data.categoryInfo && data.categoryInfo.data ? data.categoryInfo.data : null;
+            const lots = data && Array.isArray(data.lots) ? data.lots : [];
+            const decorations = data && Array.isArray(data.decorations) ? data.decorations : [];
+
+            const state = {
+                lots,
+                decorations,
+                currentDecoration: 'all',
+                status: 'all'
+            };
+
+            container.innerHTML = `
+                <div class="mb-8">
+                    <h1 class="text-3xl md:text-5xl font-unbounded mb-2">${info && info.name ? info.name : 'Планировки'}</h1>
+                    <p class="text-gray-400 text-sm">${info && info.description ? info.description : ''}</p>
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                    <div id="layouts-decorations-filter" class="flex flex-wrap gap-2"></div>
+                    <div id="layouts-status-filter" class="flex items-center gap-2"></div>
+                </div>
+                <div id="layouts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                </div>
+            `;
+
+            const decorationsFilterEl = document.getElementById('layouts-decorations-filter');
+            const statusFilterEl = document.getElementById('layouts-status-filter');
+            const gridEl = document.getElementById('layouts-grid');
+
+            function getDecorationId(lot) {
+                if (!lot) return null;
+                if (lot.decoration_id) return lot.decoration_id;
+                if (lot.decoration && lot.decoration.id) return lot.decoration.id;
+                return null;
+            }
+
+            function getDecorationName(id) {
+                if (!id || !decorations.length) return '';
+                const found = decorations.find(d => String(d.id) === String(id));
+                return found && found.name ? found.name : '';
+            }
+
+            function renderDecorationsFilter() {
+                if (!decorationsFilterEl) return;
+
+                const decorationIds = Array.from(
+                    new Set(
+                        state.lots
+                            .map(l => getDecorationId(l))
+                            .filter(Boolean)
+                    )
+                );
+
+                const hasDecorations = decorationIds.length > 0;
+
+                if (!hasDecorations) {
+                    decorationsFilterEl.innerHTML = '<span class="text-sm text-gray-400">Фильтр по отделке недоступен</span>';
+                    return;
+                }
+
+                const buttonsHtml = [
+                    `<button data-decoration="all" class="px-4 py-2 rounded-full text-sm font-semibold bg-white text-black">Все планировки</button>`
+                ].concat(
+                    decorationIds.map(id => {
+                        const name = getDecorationName(id) || `Вариант ${id}`;
+                        return `<button data-decoration="${id}" class="px-4 py-2 rounded-full text-sm font-semibold bg-transparent border border-white/20 text-white hover:bg-white hover:text-black transition-colors">${name}</button>`;
+                    })
+                ).join('');
+
+                decorationsFilterEl.innerHTML = buttonsHtml;
+
+                decorationsFilterEl.querySelectorAll('button[data-decoration]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const value = btn.getAttribute('data-decoration');
+                        state.currentDecoration = value;
+
+                        decorationsFilterEl.querySelectorAll('button[data-decoration]').forEach(b => {
+                            b.classList.remove('bg-white', 'text-black');
+                            b.classList.add('bg-transparent', 'text-white');
+                        });
+
+                        btn.classList.add('bg-white', 'text-black');
+                        btn.classList.remove('bg-transparent', 'text-white');
+
+                        applyLayoutsFilters();
+                    });
+                });
+            }
+
+            function renderStatusFilter() {
+                if (!statusFilterEl) return;
+
+                statusFilterEl.innerHTML = `
+                    <label class="inline-flex items-center cursor-pointer gap-2">
+                        <span class="text-white text-sm font-medium">Только в продаже</span>
+                        <input type="checkbox" id="layouts-status-toggle" class="sr-only peer">
+                        <div class="relative w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                    </label>
+                `;
+
+                const toggle = document.getElementById('layouts-status-toggle');
+                if (toggle) {
+                    toggle.addEventListener('change', (e) => {
+                        state.status = e.target.checked ? 'sale' : 'all';
+                        applyLayoutsFilters();
+                    });
+                }
+            }
+
+            function applyLayoutsFilters() {
+                let filtered = state.lots.slice();
+
+                if (state.currentDecoration !== 'all') {
+                    filtered = filtered.filter(lot => {
+                        const id = getDecorationId(lot);
+                        return id && String(id) === String(state.currentDecoration);
+                    });
+                }
+
+                if (state.status === 'sale') {
+                    filtered = filtered.filter(lot => {
+                        const s = lot.status && lot.status.name ? lot.status.name.toLowerCase() : '';
+                        if (!s) return true;
+                        return !s.includes('продан') && !s.includes('бронь');
+                    });
+                }
+
+                renderLayoutsGrid(filtered);
+            }
+
+            function renderLayoutsGrid(list) {
+                if (!gridEl) return;
+
+                if (!list.length) {
+                    gridEl.innerHTML = '<p class="text-white text-center col-span-full font-unbounded">Нет планировок для выбранных фильтров</p>';
+                    return;
+                }
+
+                gridEl.innerHTML = list.map(lot => {
+                    const title = formatTitle(lot.name || lot.category?.current_name || 'Лот');
+
+                    let areaText = '';
+                    if (lot.area) {
+                        areaText = `${lot.area} м²`;
+                    } else if (lot.min_area) {
+                        areaText = `${lot.min_area} - ${lot.max_area} м²`;
+                    }
+
+                    let floorText = '';
+                    if (lot.floor) {
+                        floorText = `${lot.floor} этаж`;
+                    } else if (lot.min_floor) {
+                        floorText = `${lot.min_floor} - ${lot.max_floor} этаж`;
+                    }
+
+                    let imageSrc = '/storage/static/default_image.jpg';
+                    if (lot.pictures && lot.pictures.length > 0) {
+                        const withPath = lot.pictures.find(p => p.path);
+                        const withGallery = lot.pictures.find(p => p.gallery);
+                        if (withPath) {
+                            imageSrc = withPath.path;
+                        } else if (withGallery) {
+                            imageSrc = withGallery.gallery;
+                        }
+                    }
+
+                    const statusName = lot.status && lot.status.name ? lot.status.name : '';
+                    const isSold = statusName.toLowerCase().includes('продан');
+                    const statusHtml = statusName ? `
+                        <div class="absolute top-4 right-4 z-20 px-3 py-1 rounded text-xs font-bold uppercase tracking-wider ${isSold ? 'bg-gray-800 text-white' : 'bg-red-600 text-white'}">
+                            ${statusName}
+                        </div>
+                    ` : '';
+
+                    const abbreviation = lot.abbreviation || (lot.category ? lot.category.abbreviation : '');
+                    const abbrHtml = abbreviation ? `
+                        <div class="bg-[#902F2F] py-0.5 px-3 text-white rounded self-start text-sm font-bold uppercase mb-2 inline-block">
+                            ${abbreviation}
+                        </div>
+                    ` : '';
+
+                    const numberText = lot.number_object || lot.id;
+
+                    return `
+                        <div class="bg-white p-5 rounded-lg relative group cursor-pointer hover:shadow-xl transition-all duration-300">
+                           ${statusHtml}
+                            <div class="mb-5 relative aspect-[3/2.5] rounded-xl overflow-hidden bg-gray-200">
+                                <img src="${imageSrc}" alt="${title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            </div>
+                            <div class="flex flex-col gap-2.5">
+                                ${abbrHtml}
+                                <p class="font-unbounded text-2xl text-black leading-tight">${title}</p>
+                                <p class="text-sm font-semibold text-gray-600">${areaText}</p>
+                                <div class="flex items-center justify-between text-sm text-gray-500">
+                                    <span>${floorText}</span>
+                                    <span>№${numberText}</span>
+                                </div>
+                            </div>
+                            <a href="detail.html?id=${lot.id}" class="absolute inset-0 z-10"></a>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            renderDecorationsFilter();
+            renderStatusFilter();
+            applyLayoutsFilters();
         }
 
         function formatTitle(text) {
@@ -313,7 +561,13 @@
             return text.charAt(0).toUpperCase() + text.slice(1);
         }
 
-        document.addEventListener('DOMContentLoaded', loadLot);
+        document.addEventListener('DOMContentLoaded', () => {
+            if (categoryId) {
+                loadLayouts();
+            } else {
+                loadLot();
+            }
+        });
     </script>
 </body>
 </html>

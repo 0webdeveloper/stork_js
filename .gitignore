@@ -36,5 +36,8 @@ Thumbs.db
 
 # Cache directories
 .cache/
+.npm-cache/
 tmp/
 temp/
+components/
+pages/

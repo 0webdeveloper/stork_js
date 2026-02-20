@@ -336,7 +336,7 @@ export class ExpandingButtonModule {
                         </div>
                     </div>
                     
-                    <a href="lots/detail.html?category_id=${categoryId}" class="absolute inset-0 z-10" onclick="if(event.target.closest('.slider-prev, .slider-next')) event.preventDefault();"></a>
+                    <a href="lots/detail.html?category_id=${categoryId}&floor=${floorIdx}&facade=${currentBlockId}" class="absolute inset-0 z-10" onclick="if(event.target.closest('.slider-prev, .slider-next')) event.preventDefault();"></a>
                 </div>
             `;
         });

@@ -211,10 +211,13 @@
     <script type="module">
         import '../assets/js/app.js';
         import { fetchApi } from '../assets/js/modules/state.js';
+        import { Gallery } from '../assets/js/modules/gallery.js';
 
         const params = new URLSearchParams(window.location.search);
         const lotId = params.get('id');
         const categoryId = params.get('category_id');
+        const floorParam = params.get('floor');
+        const facadeParam = params.get('facade');
 
         async function loadLot() {
             const container = document.getElementById('lot-detail');
@@ -225,10 +228,14 @@
             }
 
             try {
-                const data = await fetchApi('/lots/', { id: lotId });
+                const [lotsResp, associatesResp, decorationsResp] = await Promise.all([
+                    fetchApi('/lots/', { id: lotId }),
+                    fetchApi('/categories/associate', { id: lotId }),
+                    fetchApi('/decorations')
+                ]);
                 
-                if (data && data.data && data.data.length > 0) {
-                    const lot = data.data[0];
+                if (lotsResp && lotsResp.data && lotsResp.data.length > 0) {
+                    const lot = lotsResp.data[0];
                     renderLot(lot, container);
                 } else {
                     container.innerHTML = '<div class="text-center py-20"><p class="text-2xl">Лот не найден или удален</p><a href="index.html" class="text-red-500 hover:underline mt-4 inline-block">Перейти к списку лотов</a></div>';
@@ -260,15 +267,25 @@
             `;
 
             try {
-                const [categoryInfo, decorations, associates, lotsResponse] = await Promise.all([
+                const blockId = facadeParam || null;
+
+                const [facadeInfo, floorCategories, categoryInfo, decorations, associates, lotsResponse] = await Promise.all([
+                    blockId ? fetchApi('/facade', { block_id: blockId }) : Promise.resolve(null),
+                    blockId && floorParam ? fetchApi('/categories', { block_id: blockId, floor: floorParam }) : Promise.resolve(null),
                     fetchApi('/categories/info', { category_id: categoryId }),
                     fetchApi('/decorations'),
                     fetchApi('/categories/associate', { id: categoryId }),
-                    fetchApi('/lots/', { category_id: categoryId, page: 1 })
+                    fetchApi('/lots/', Object.assign(
+                        { category_id: categoryId, page: 1 },
+                        blockId ? { block_id: blockId } : {},
+                        floorParam ? { floor: floorParam } : {}
+                    ))
                 ]);
 
                 const lots = lotsResponse && Array.isArray(lotsResponse.data) ? lotsResponse.data : [];
                 renderLayoutsPage(container, {
+                    facadeInfo,
+                    floorCategories,
                     categoryInfo,
                     decorations,
                     associates,

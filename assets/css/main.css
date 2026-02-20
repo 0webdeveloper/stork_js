@@ -158,3 +158,12 @@ body.page-loaded {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+.info-gradient {
+  &::after {
+    background-image: linear-gradient(180deg, transparent, #1d1d1d);
+    content: "";
+    inset: 0;
+    position: absolute;
+  }
+}

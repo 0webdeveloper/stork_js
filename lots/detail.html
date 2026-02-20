@@ -230,13 +230,14 @@
             try {
                 const [lotsResp, associatesResp, decorationsResp] = await Promise.all([
                     fetchApi('/lots/', { id: lotId }),
-                    fetchApi('/categories/associate', { id: lotId }),
+                    fetchApi('/lots/associate', { id: lotId }),
                     fetchApi('/decorations')
                 ]);
                 
                 if (lotsResp && lotsResp.data && lotsResp.data.length > 0) {
                     const lot = lotsResp.data[0];
-                    renderLot(lot, container);
+                    const related = associatesResp && Array.isArray(associatesResp.data) ? associatesResp.data : [];
+                    renderLot(lot, container, related);
                 } else {
                     container.innerHTML = '<div class="text-center py-20"><p class="text-2xl">Лот не найден или удален</p><a href="index.html" class="text-red-500 hover:underline mt-4 inline-block">Перейти к списку лотов</a></div>';
                 }
@@ -297,60 +298,98 @@
             }
         }
 
-        function renderLot(lot, container) {
+        function renderLot(lot, container, relatedLots) {
             const title = formatTitle(lot.name || lot.category?.current_name || 'Лот');
-            
-            // Area
+            const categoryName = lot.category && (lot.category.name || lot.category.current_name) ? (lot.category.name || lot.category.current_name) : 'Апартаменты';
+            const status = lot.status?.name || 'Свободно';
+            const decoration = lot.decoration?.name || 'WHITE-BOX';
+
+            let blockName = '-';
+            if (typeof lot.block === 'number' || typeof lot.block === 'string') {
+                blockName = lot.block;
+            } else if (lot.block && (lot.block.name || lot.block.title || lot.block.code)) {
+                blockName = lot.block.name || lot.block.title || lot.block.code;
+            } else if (lot.block_name) {
+                blockName = lot.block_name;
+            }
+
             let area = lot.area ? `${lot.area} м²` : (lot.min_area ? `${lot.min_area} - ${lot.max_area} м²` : '-');
-            
-            // Floor
-            let floor = lot.floor ? `${lot.floor} этаж` : (lot.min_floor ? `${lot.min_floor} - ${lot.max_floor} этаж` : '-');
+            let floor = lot.floor ? `${lot.floor}` : (lot.min_floor ? `${lot.min_floor} - ${lot.max_floor}` : '-');
 
             container.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 animate-fade-in">
-                    <!-- Gallery -->
-                    <div id="lot-gallery" class="relative rounded-2xl overflow-hidden bg-gray-800 aspect-[4/3] md:aspect-auto md:h-[600px]">
-                        <!-- Gallery will be mounted here -->
+                <div class="space-y-16 animate-fade-in">
+                    <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-10 md:gap-20 items-start">
+                        <div class="flex flex-col gap-8">
+                            <div class="space-y-3">
+                                <div class="text-sm text-gray-500 uppercase tracking-[0.2em]">
+                                    ${categoryName}
+                                </div>
+                                <h1 class="text-3xl md:text-5xl lg:text-6xl font-unbounded leading-tight">
+                                    ${title}
+                                </h1>
+                            </div>
+
+                            <div class="grid grid-cols-2 lg:grid-cols-3 gap-6 text-sm md:text-base">
+                                <div class="space-y-1">
+                                    <p class="text-gray-500 uppercase tracking-[0.18em] text-xs">Площадь</p>
+                                    <p class="text-xl md:text-2xl font-bold">${area}</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-gray-500 uppercase tracking-[0.18em] text-xs">Этаж</p>
+                                    <p class="text-xl md:text-2xl font-bold">${floor}</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-gray-500 uppercase tracking-[0.18em] text-xs">Блок</p>
+                                    <p class="text-xl md:text-2xl font-bold">${blockName}</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-gray-500 uppercase tracking-[0.18em] text-xs">Отделка</p>
+                                    <p class="text-xl md:text-2xl font-bold">${decoration}</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-gray-500 uppercase tracking-[0.18em] text-xs">Статус</p>
+                                    <p class="text-xl md:text-2xl font-bold">${status}</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-gray-500 uppercase tracking-[0.18em] text-xs">Категория лота</p>
+                                    <p class="text-xl md:text-2xl font-bold">${categoryName}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                                <button class="inline-flex items-center justify-center gap-3 bg-red-button text-white px-10 py-4 rounded font-bold hover:bg-red-700 transition-colors text-lg w-full sm:w-auto text-center" data-modal="leave-request">
+                                    <span>Инвестировать</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="w-full">
+                            <div id="lot-gallery" class="relative w-full rounded-2xl overflow-hidden bg-gray-900 aspect-[16/9] md:h-[420px] flex items-center justify-center">
+                            </div>
+                        </div>
                     </div>
-                    
-                    <!-- Info -->
-                    <div class="flex flex-col justify-center">
-                        <div class="mb-2 text-red-500 font-bold uppercase tracking-widest text-sm">
-                            ${lot.status?.name || 'В продаже'}
+
+                    <div class="space-y-6">
+                        <h2 class="text-2xl md:text-3xl font-unbounded">Вам могут подойти</h2>
+                        <div id="lot-related" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         </div>
-                        
-                        <h1 class="text-4xl md:text-6xl font-unbounded mb-6 leading-tight">${title}</h1>
-                        
-                        <div class="grid grid-cols-2 gap-6 mb-10 border-y border-gray-700 py-6">
-                            <div>
-                                <p class="text-gray-400 text-sm mb-1">Площадь</p>
-                                <p class="text-2xl font-bold">${area}</p>
+                    </div>
+
+                    <div class="space-y-6 bg-back-white-sections text-back-black-sections -mx-4 md:-mx-15 px-4 md:px-15 py-12 md:py-16">
+                        <h2 class="text-2xl md:text-3xl font-unbounded mb-4 md:mb-8">Варианты покупки</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                            <div class="relative overflow-hidden rounded-2xl h-56 md:h-72">
+                                <img src="https://stork-hotels.ru/_nuxt/payment.ORYe8UMS.jpg" alt="100% оплата" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-6 flex items-end">
+                                    <p class="text-white text-xl font-bold">100% оплата</p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-gray-400 text-sm mb-1">Этаж</p>
-                                <p class="text-2xl font-bold">${floor}</p>
+                            <div class="relative overflow-hidden rounded-2xl h-56 md:h-72">
+                                <img src="https://stork-hotels.ru/_nuxt/payment-2.C3wVrhaV.jpg" alt="Рассрочка" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-6 flex items-end">
+                                    <p class="text-white text-xl font-bold">Рассрочка</p>
+                                </div>
                             </div>
-                            ${lot.block ? `
-                            <div>
-                                <p class="text-gray-400 text-sm mb-1">Блок</p>
-                                <p class="text-2xl font-bold">${lot.block.name}</p>
-                            </div>
-                            ` : ''}
-                            <div>
-                                <p class="text-gray-400 text-sm mb-1">Номер</p>
-                                <p class="text-2xl font-bold">№${lot.number_object || lot.id}</p>
-                            </div>
-                        </div>
-                        <div class="prose text-gray-300 mb-10">
-                            <p>${lot.description || 'Описание отсутствует'}</p>
-                        </div>
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <button class="bg-red-button text-white px-10 py-4 rounded font-bold hover:bg-red-700 transition-colors text-lg w-full sm:w-auto text-center" data-modal="leave-request">
-                                Оставить заявку
-                            </button>
-                            <a href="tel:+74742516393" class="border border-white text-white px-10 py-4 rounded font-bold hover:bg-white hover:text-black transition-colors text-lg w-full sm:w-auto text-center">
-                                Позвонить
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -359,7 +398,47 @@
             if (lot.pictures && lot.pictures.length > 0) {
                 new Gallery('lot-gallery', lot.pictures);
             } else {
-                 new Gallery('lot-gallery', [{ name: 'placeholder', path: '/assets/image/placeholder.jpg' }]);
+                 new Gallery('lot-gallery', [{ name: 'default_image.jpg', path: '/storage/static/default_image.jpg' }]);
+            }
+
+            const relatedContainer = document.getElementById('lot-related');
+            if (relatedContainer) {
+                const list = Array.isArray(relatedLots) ? relatedLots : [];
+                if (!list.length) {
+                    relatedContainer.innerHTML = '<p class="text-gray-400 col-span-full">Похожие варианты появятся позже</p>';
+                } else {
+                    relatedContainer.innerHTML = list.slice(0, 4).map(item => {
+                        const itemTitle = formatTitle(item.name || item.category?.current_name || 'Апартаменты');
+                        const itemArea = item.area || item.min_area || '';
+                        const itemFloor = item.floor || item.min_floor || '';
+                        const itemStatus = item.status?.name || '';
+
+                        let imageSrc = '/storage/static/default_image.jpg';
+                        if (item.pictures && item.pictures.length > 0) {
+                            const withPath = item.pictures.find(p => p.path);
+                            const withGallery = item.pictures.find(p => p.gallery);
+                            if (withPath) imageSrc = withPath.path;
+                            else if (withGallery) imageSrc = withGallery.gallery;
+                        }
+
+                        return `
+                            <a href="detail.html?id=${item.id}" class="bg-white text-back-black-sections rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow flex flex-col">
+                                <div class="aspect-[3/2] bg-gray-200">
+                                    <img src="${imageSrc}" alt="${itemTitle}" class="w-full h-full object-cover">
+                                </div>
+                                <div class="p-4 flex flex-col gap-2">
+                                    <p class="text-sm text-gray-500 uppercase tracking-[0.18em]">${item.category?.name || categoryName}</p>
+                                    <p class="font-unbounded text-lg">${itemTitle}</p>
+                                    <div class="flex justify-between text-sm text-gray-600">
+                                        <span>${itemArea ? itemArea + ' м²' : ''}</span>
+                                        <span>${itemFloor ? itemFloor + ' этаж' : ''}</span>
+                                    </div>
+                                    ${itemStatus ? `<p class="text-xs font-semibold ${itemStatus.toLowerCase().includes('продан') ? 'text-gray-500' : 'text-red-600'}">${itemStatus}</p>` : ''}
+                                </div>
+                            </a>
+                        `;
+                    }).join('');
+                }
             }
         }
 

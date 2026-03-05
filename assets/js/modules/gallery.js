@@ -25,8 +25,8 @@ export class Gallery {
         this.container.innerHTML = `
             <div class="relative w-full h-full group">
                 <!-- Main Image -->
-                <div class="w-full h-full overflow-hidden relative bg-gray-900">
-                    <img id="gallery-main-img" src="" alt="Gallery Image" class="w-full h-full object-contain transition-opacity duration-300 opacity-0">
+                <div class="w-full h-full overflow-hidden relative">
+                    <img id="gallery-main-img" src="" alt="Gallery Image" class="w-full h-full object-contain transition-opacity duration-300 opacity-0 rounded-lg">
                 </div>
 
                 <!-- Navigation Buttons (only if > 1 image) -->

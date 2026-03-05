@@ -103,52 +103,274 @@
                     <li><a href="./index.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Проект</a></li>
                     <li><a href="./income.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Доходы</a></li>
                     <li><a href="./lots/index.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Лоты</a></li>
-                    <li><a href="./questions.html" class="px-5 py-3.5 text-red-500 transition-all">Вопросы</a></li>
+                    <li><a href="./questions.html" class="px-5 py-3.5 hover:text-white/70 transition-all bg-[#ca1f26] rounded-lg">Вопросы</a></li>
                     <li><a href="./developer.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Девелопер</a></li>
                     <li><a href="./payment.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Оплата</a></li>
                     <li><a href="./contacts.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Контакты</a></li>
                 </ul>
 
-                <button class="bg-red-button font-semibold px-8 py-2.5 text-white rounded hover:bg-red-700 transition-colors" data-modal="learn-more">
+                <button class="bg-red-button font-semibold px-8 py-2.5 text-white rounded hover:bg-red-700 transition-colors cursor-pointer" data-modal="learn-more" data-hidden-page="Вопросы" data-hidden-context="Меню">
                     Узнать больше
                 </button>
             </div>
         </nav>
         
-        <!-- Mobile Nav Bar -->
-        <div class="lg:hidden p-4 flex justify-between items-center bg-black/50 backdrop-blur-sm fixed w-full top-0 z-50">
-             <a href="./index.html" class="block font-bold text-xl">STORK</a>
-             <button id="mobile-menu-toggle" class="text-white">
-                 <!-- Burger Icon -->
-                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-             </button>
+        <div class="lg:hidden px-4 py-3 flex justify-between items-center bg-white fixed w-full top-0 z-50 shadow-sm">
+            <button id="mobile-menu-toggle" class="text-black">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <div class="flex gap-6 items-center">
+                <a href="https://yandex.ru/maps/-/CDdGV-3L" target="_blank" class="text-black">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                </a>
+                <a href="tel:+74742516393" class="text-black">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    </svg>
+                </a>
+            </div>
         </div>
 
-        <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-40 transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center">
-            <button id="mobile-menu-close" class="absolute top-6 right-6 text-white">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <nav class="flex flex-col gap-6 text-center text-2xl font-bold">
-                <a href="./index.html" class="hover:text-red-500">Проект</a>
-                <a href="./income.html" class="hover:text-red-500">Доходы</a>
-                <a href="./lots/index.html" class="hover:text-red-500">Лоты</a>
-                <a href="./questions.html" class="text-red-500">Вопросы</a>
-                <a href="./developer.html" class="hover:text-red-500">Девелопер</a>
-                <a href="./payment.html" class="hover:text-red-500">Оплата</a>
-                <a href="./contacts.html" class="hover:text-red-500">Контакты</a>
-            </nav>
+        <div id="mobile-menu" class="fixed inset-0 bg-[#1D1D1D] z-[60] transform translate-x-full transition-transform duration-300 flex flex-col h-full overflow-y-auto">
+            <div class="p-4 flex justify-end items-center">
+                <button id="mobile-menu-close" class="text-white p-2">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="px-6 flex flex-col gap-6 pb-8">
+                <nav class="flex flex-col gap-4 text-xl font-bold text-white">
+                    <a href="index.html" class="hover:text-red-500 transition-colors px-4 py-2">Проект</a>
+                    <a href="income.html" class="hover:text-red-500 transition-colors px-4 py-2">Доходы</a>
+                    <a href="lots/index.html" class="hover:text-red-500 transition-colors px-4 py-2">Лоты</a>
+                    <a href="questions.html" class="bg-red-button text-white px-4 py-2 rounded-lg w-fit">Вопросы</a>
+                    <a href="developer.html" class="hover:text-red-500 transition-colors px-4 py-2">Девелопер</a>
+                    <a href="payment.html" class="hover:text-red-500 transition-colors px-4 py-2">Оплата</a>
+                    <a href="contacts.html" class="hover:text-red-500 transition-colors px-4 py-2">Контакты</a>
+                </nav>
+                <button class="bg-red-button text-white font-bold py-3.5 rounded-lg w-full" data-modal="leave-request" data-hidden-page="MobileMenu" data-hidden-context="Button">
+                    Связаться с менеджером
+                </button>
+                <div class="flex gap-4">
+                    <a href="https://vk.com/stork_hotels" target="_blank" class="w-10 h-10 flex items-center justify-center rounded bg-[#0077FF]">
+                        <svg class="w-6 h-6 fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.162 18.994c.609 0 .858-.406.851-1.184 0-1.308.502-2.325 2.123-2.325 1.7 0 1.303 1.3 2.174 2.315.356.575 1.053 1.194 2.072 1.194 1.192 0 2.383.006 3.57.006.961 0 1.144-.529.705-1.577-.55-1.376-2.572-3.626-2.76-4.047-.417-.842.171-1.09 1.171-2.43 1.144-1.518 2.502-3.13 2.32-4.24-.078-.529-1.215-.45-1.996-.402-1.086.068-1.55.02-2.123.078-1.09.112-1.538.666-2.303 1.858-.55 1.166-2.174 3.692-2.426 3.86-.39.232-.505.02-.505-.884 0-2.22.42-3.418-.737-4.144-.575-.36-1.15-.36-1.85-.352-1.782.02-3.17.06-3.766.754-.256.3-.025.75.906.88 1.13.175 1.17 1.44 1.162 3.196-.006 1.054-.306 2.053-1.054 2.143-.88.106-2.366-2.72-3.08-4.75-.246-.713-1.004-1.35-1.85-1.402-.85-.054-1.64 0-1.64 0-.66 0-.76.326-.76.703 0 .66.786 2.146 3.18 5.488 2.21 3.09 5.37 5.756 8.24 5.666z"/></svg>
+                    </a>
+                    <a href="https://t.me/stork_hotels" target="_blank" class="w-10 h-10 flex items-center justify-center rounded bg-[#2AABEE]">
+                        <svg class="w-5 h-5 fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </a>
+                </div>
+                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center overflow-hidden">
+                    <img src="assets/image/urban.svg" alt="Urban Awards" class="w-full h-full object-cover">
+                </div>
+                <div class="text-white font-bold">
+                    <p class="mb-1"><a href="tel:+74742516393">+7 (4742) 51-63-93</a></p>
+                    <p>улица М.И. Неделина, 6</p>
+                </div>
+                <div class="text-[#8C949B] text-xs mt-4">
+                    <p>ООО «РСС» ИНН: 4826152621, ОГРН: 1224800000754</p>
+                    <p class="mt-2">Юридический адрес: 398016, г. Липецк, ул. Космонавтов, д. 26/1, этаж 2, помещ./каб. 1/8</p>
+                </div>
+            </div>
         </div>
     </header>
 
     <main class="pt-24 md:pt-40 min-h-screen">
         <div class="container mx-auto px-4 md:px-15" id="faq-container">
-            <!-- Content will be injected by JS -->
-            <div class="animate-pulse space-y-4">
-                <div class="h-10 bg-gray-800 w-1/3 mb-10"></div>
-                <div class="h-20 bg-gray-800 w-full rounded"></div>
-                <div class="h-20 bg-gray-800 w-full rounded"></div>
-                <div class="h-20 bg-gray-800 w-full rounded"></div>
+
+            <div class="sx:py-16 md:py-24 text-white">
+                <h2 class="title md:mb-16 sx:mb-10 text-left">
+                    Ответы <br class="sx:hidden md:block">
+                    на часто задаваемые <br class="sx:hidden md:block">
+                    <img src="./assets/image/introTab/questions/questions.webp" 
+                         class="sx:hidden md:inline max-w-[13.875rem]" 
+                         alt="Questions.">вопросы
+                </h2>
+                <div class="card">
+                    <div class="accordions flex flex-col gap-4">
+                        
+                    <div class="border-b border-white/20 last:border-0">
+                        <button class="w-full flex flex-row-reverse justify-between items-center py-6 text-left group transition-colors cursor-pointer" aria-expanded="false">
+                            <div class="transform transition-transform duration-300 group-aria-expanded:rotate-0 -rotate-90">
+                                <svg class="w-8 h-8 md:w-16 md:h-16 stroke-white" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 24L32 40L48 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-white text-xl md:text-2xl font-medium pr-8">Чем апартамент отличается от квартиры? </h2>
+                        </button>
+                        <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
+                            <div class="overflow-hidden text-description-text-color text-base md:text-lg">
+                                <div class="pb-6">
+                                    <p class="mb-6 dynamic-answertext-font">Апартаменты – это вид коммерческой недвижимости, используемый для проживания. Из минусов: 1) В Апартаментах нельзя прописаться, только временная регистрация до 5 лет. 2) невозможно, использовать мат капитал и другие субсидии от государства при покупке. 3) ставка налога на имущество выше, хотя кадастровая стоимость ниже, чем у аналогичной по площади квартиры и это компенсирует частично разницу. 4) тариф на коммуналку несколько выше, чем в квартире, но это компенсируется объемом предоставляемых услуг. Из плюсов: 1) Гостиничный сервис 24/7. 2) Эффективные планировки и огромные общественные пространства. Будучи резидентом комплекса, Вы получаете прямой доступ ко всей инфраструктуре – бассейн, SPA, фитнес, коворкинг, химчистка, прачечная и т. д. 3) Просторное лобби, вежливый ресепшн, охрана и безопасность для вас и гостей. 4) Доступ в охраняемый паркинг. 5) Апартаменты могут сдаваться в аренду как физическим, так и юридическим лицам, что расширяет круг потенциальных арендаторов и повышает загрузку. 6) Арендные ставки в апартаментах существенно выше, чем в квартирах, поскольку ориентированы на бизнес-аудиторию, предпочитающую комфорт, сервис, удобство и безопасность. 7) Собственник, больше не беспокоится о поиске арендатора, о документах и платежках, уборке и мелком ремонте, всю заботу обслуживанию комплекса и самого апартамента берет на себя управляющая компания, в т ч обеспечивает своевременную оплату коммунальных услуг арендатором и перечисление дохода собственнику. 8) Всю финансовую информацию о текущих расходов и доходах собственник может посмотреть онлайн в личном кабинете и/или приложении. Апартаменты идеально подходят для инвестиции и для собственного проживания, но если Вы покупаете квартиру с мат. капиталом или Вам нужна прописка, то этот формат недвижимости не совсем подходит под ваши цели.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-white/20 last:border-0">
+                        <button class="w-full flex flex-row-reverse justify-between items-center py-6 text-left group transition-colors cursor-pointer" aria-expanded="false">
+                            <div class="transform transition-transform duration-300 group-aria-expanded:rotate-0 -rotate-90">
+                                <svg class="w-8 h-8 md:w-16 md:h-16 stroke-white" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 24L32 40L48 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-white text-xl md:text-2xl font-medium pr-8">Что входит в оснащение сервисных апартаментов/номеров отеля? </h2>
+                        </button>
+                        <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
+                            <div class="overflow-hidden text-description-text-color text-base md:text-lg">
+                                <div class="pb-6">
+                                    <p class="mb-6 dynamic-answertext-font">В меблировку, которая оплачивается дополнительно, входит мебель, бытовая техника, освещение, текстиль, посуда, элементы дизайна. Состав и стоимость оснащения зависит от типа номера / сервисного апартамента. </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-white/20 last:border-0">
+                        <button class="w-full flex flex-row-reverse justify-between items-center py-6 text-left group transition-colors cursor-pointer" aria-expanded="false">
+                            <div class="transform transition-transform duration-300 group-aria-expanded:rotate-0 -rotate-90">
+                                <svg class="w-8 h-8 md:w-16 md:h-16 stroke-white" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 24L32 40L48 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-white text-xl md:text-2xl font-medium pr-8">Как я узнаю сколько заработал мой номер / сервисный апартамент? </h2>
+                        </button>
+                        <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
+                            <div class="overflow-hidden text-description-text-color text-base md:text-lg">
+                                <div class="pb-6">
+                                    <p class="mb-6 dynamic-answertext-font">В настоящий момент мы ведем разработку личного кабинета инвестора, который будет внедрен к моменту запуска объекта. В личном кабинете инвестору будет доступна в режиме онлайн вся информация по тому, сколько дней сдавался объект, по какому тарифу, какие были эксплуатационные расходы за период и т.д. На основании этих данных будут формироваться отчеты за период для согласования инвестором и перечисления полученного дохода.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-white/20 last:border-0">
+                        <button class="w-full flex flex-row-reverse justify-between items-center py-6 text-left group transition-colors cursor-pointer" aria-expanded="false">
+                            <div class="transform transition-transform duration-300 group-aria-expanded:rotate-0 -rotate-90">
+                                <svg class="w-8 h-8 md:w-16 md:h-16 stroke-white" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 24L32 40L48 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-white text-xl md:text-2xl font-medium pr-8">Могу ли я прописаться в апартаментах? </h2>
+                        </button>
+                        <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
+                            <div class="overflow-hidden text-description-text-color text-base md:text-lg">
+                                <div class="pb-6">
+                                    <p class="mb-6 dynamic-answertext-font">В объектах жилой недвижимости можно оформить постоянную прописку. В апартаментах – только временную регистрацию сроком на пять лет. Однако люди с временной пропиской обладают теми же правами, что и человек с постоянной регистрацией.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-white/20 last:border-0">
+                        <button class="w-full flex flex-row-reverse justify-between items-center py-6 text-left group transition-colors cursor-pointer" aria-expanded="false">
+                            <div class="transform transition-transform duration-300 group-aria-expanded:rotate-0 -rotate-90">
+                                <svg class="w-8 h-8 md:w-16 md:h-16 stroke-white" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 24L32 40L48 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-white text-xl md:text-2xl font-medium pr-8">Почему я подписываю так много договоров на сделке? Что входит в пакет договоров?</h2>
+                        </button>
+                        <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
+                            <div class="overflow-hidden text-description-text-color text-base md:text-lg">
+                                <div class="pb-6">
+                                    <p class="mb-6 dynamic-answertext-font">В отличие от квартиры в новостройке, вы покупаете не просто пол и стены, а полностью готовый доходный продукт, сформированный для получение инвестором пассивного дохода от аренды. У этого продукта есть несколько составляющих, которые мы должны обеспечить инвестору, а именно: объект недвижимости (ДДУ), ремонт помещения (договор подряда), меблировка требуемого качества и в достаточном количестве для заселения гостей (договор купли-продажи оснащения), и порядок формирования дохода инвестора (регулируется и определяется договорами с УК)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-white/20 last:border-0">
+                        <button class="w-full flex flex-row-reverse justify-between items-center py-6 text-left group transition-colors cursor-pointer" aria-expanded="false">
+                            <div class="transform transition-transform duration-300 group-aria-expanded:rotate-0 -rotate-90">
+                                <svg class="w-8 h-8 md:w-16 md:h-16 stroke-white" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 24L32 40L48 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-white text-xl md:text-2xl font-medium pr-8">Что такое готовый арендный бизнес? </h2>
+                        </button>
+                        <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
+                            <div class="overflow-hidden text-description-text-color text-base md:text-lg">
+                                <div class="pb-6">
+                                    <p class="mb-6 dynamic-answertext-font">Готовый арендный бизнес (ГАБ) - это отдельный объект недвижимости со своим кадастровым номерым, который сдается в аренду, а всеми операционными вопросами по получению дохода и операционному обслуживанию занимается профессиональная управляющая компания</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-white/20 last:border-0">
+                        <button class="w-full flex flex-row-reverse justify-between items-center py-6 text-left group transition-colors cursor-pointer" aria-expanded="false">
+                            <div class="transform transition-transform duration-300 group-aria-expanded:rotate-0 -rotate-90">
+                                <svg class="w-8 h-8 md:w-16 md:h-16 stroke-white" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 24L32 40L48 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-white text-xl md:text-2xl font-medium pr-8">От какой суммы рассчитывается доходность? </h2>
+                        </button>
+                        <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
+                            <div class="overflow-hidden text-description-text-color text-base md:text-lg">
+                                <div class="pb-6">
+                                    <p class="mb-6 dynamic-answertext-font">Доходность считается на всю сумму затрат на приобретение номера - т.е. от стоимости помещения + затраты на ремонт + затраты на мебель и технику</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-white/20 last:border-0">
+                        <button class="w-full flex flex-row-reverse justify-between items-center py-6 text-left group transition-colors cursor-pointer" aria-expanded="false">
+                            <div class="transform transition-transform duration-300 group-aria-expanded:rotate-0 -rotate-90">
+                                <svg class="w-8 h-8 md:w-16 md:h-16 stroke-white" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 24L32 40L48 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-white text-xl md:text-2xl font-medium pr-8">А если что-то выйдет из строя в номере/апартаменте? Например, потечет кран или перегорит лампочка?</h2>
+                        </button>
+                        <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
+                            <div class="overflow-hidden text-description-text-color text-base md:text-lg">
+                                <div class="pb-6">
+                                    <p class="mb-6 dynamic-answertext-font">Если в процессе сдачи в аренду возникают какие-то проблемы – например, течет кран, заела дверная ручка, перегорела лампочка, не включается телевизор или еще что-то, то все это решает управляющая компания, инвестора в решение этих вопросов не вовлекают. Комфорт владения и получения дохода от аренды – основа нашей концепции доходного продукта. </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-white/20 last:border-0">
+                        <button class="w-full flex flex-row-reverse justify-between items-center py-6 text-left group transition-colors cursor-pointer" aria-expanded="false">
+                            <div class="transform transition-transform duration-300 group-aria-expanded:rotate-0 -rotate-90">
+                                <svg class="w-8 h-8 md:w-16 md:h-16 stroke-white" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 24L32 40L48 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-white text-xl md:text-2xl font-medium pr-8">Как я покупаю объект? </h2>
+                        </button>
+                        <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
+                            <div class="overflow-hidden text-description-text-color text-base md:text-lg">
+                                <div class="pb-6">
+                                    <p class="mb-6 dynamic-answertext-font">Мы ведем строительство в соответствии с 214-ФЗ, продажа осуществляется по договорам долевого участия с открытием эскроу-счетов. Помимо непосредственно договора на помещение, по которому вы станете собственником, вы также заключаете договор на отделку помещения и оснащение мебелью, а также договор с управляющей компанией.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-white/20 last:border-0">
+                        <button class="w-full flex flex-row-reverse justify-between items-center py-6 text-left group transition-colors cursor-pointer" aria-expanded="false">
+                            <div class="transform transition-transform duration-300 group-aria-expanded:rotate-0 -rotate-90">
+                                <svg class="w-8 h-8 md:w-16 md:h-16 stroke-white" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 24L32 40L48 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-white text-xl md:text-2xl font-medium pr-8">Какой налог на имущество я буду платить? </h2>
+                        </button>
+                        <div class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out">
+                            <div class="overflow-hidden text-description-text-color text-base md:text-lg">
+                                <div class="pb-6">
+                                    <p class="mb-6 dynamic-answertext-font">Ставка налога на имущество физических лиц в отношении апартаментов гостиничного типа составляет 0,1% от кадастровой стоимости объекта.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -157,8 +379,8 @@
                 <div class="container mx-auto px-4 md:px-15">
                     <h2 class="title text-white md:mb-16 sx:mb-10">Варианты покупки</h2>
                     <div class="bg-black rounded-full p-1 flex gap-2 mb-8">
-                        <button class="pay-tab-btn px-8 py-2.5 cursor-pointer w-full rounded-full text-lg font-bold transition-colors bg-white text-black hover:text-black hover:bg-white" data-tab="full">100% оплата</button>
-                        <button class="pay-tab-btn px-8 py-2.5 cursor-pointer w-full rounded-full text-lg font-bold transition-colors text-white hover:text-black hover:bg-white" data-tab="installment">Рассрочка</button>
+                        <button class="pay-tab-btn px-4 md:px-8 py-2.5 cursor-pointer w-full rounded-full text-lg font-bold transition-colors bg-white text-black hover:text-black hover:bg-white" data-tab="full">100% оплата</button>
+                        <button class="pay-tab-btn px-4 md:px-8 py-2.5 cursor-pointer w-full rounded-full text-lg font-bold transition-colors text-white hover:text-black hover:bg-white" data-tab="installment">Рассрочка</button>
                     </div>
                     <div id="pay-tab-full" class="pay-tab-content block">
                         <h3 class="text-white font-unbounded text-3xl mb-6">100% оплата</h3>
@@ -177,19 +399,19 @@
                         </div>
                         <h4 class="dynamic-cardtext-font text-white font-unbounded mb-6">Банки партнеры</h4>
                         <div class="grid md:grid-cols-5 sm:grid-cols-4 ss:grid-cols-3  sx:grid-cols-2 gap-4">
-                            <img src="assets/image/banks/sber.png" alt="sber">
-                            <img src="assets/image/banks/vtb.png" alt="vtb">
-                            <img src="assets/image/banks/RF.png" alt="RF">
-                            <img src="assets/image/banks/rosbank.png" alt="rosbank">
-                            <img src="assets/image/banks/otkritie.png" alt="otkritie">
-                            <img src="assets/image/banks/rosselxozbank.png" alt="rosselxozbank">
-                            <img src="assets/image/banks/alfaBank.png" alt="alfaBank">
-                            <img src="assets/image/banks/uralsib.png" alt="uralsib">
-                            <img src="assets/image/banks/promsvyazbank.png" alt="promsvyazbank">
-                            <img src="assets/image/banks/gazprombank.png" alt="gazprombank">
+                            <img src="assets/image/banks/sber.webp" alt="sber">
+                            <img src="assets/image/banks/vtb.webp" alt="vtb">
+                            <img src="assets/image/banks/RF.webp" alt="RF">
+                            <img src="assets/image/banks/rosbank.webp" alt="rosbank">
+                            <img src="assets/image/banks/otkritie.webp" alt="otkritie">
+                            <img src="assets/image/banks/rosselxozbank.webp" alt="rosselxozbank">
+                            <img src="assets/image/banks/alfaBank.webp" alt="alfaBank">
+                            <img src="assets/image/banks/uralsib.webp" alt="uralsib">
+                            <img src="assets/image/banks/promsvyazbank.webp" alt="promsvyazbank">
+                            <img src="assets/image/banks/gazprombank.webp" alt="gazprombank">
                         </div>
                     </div>
-                    <button class="bg-red-button font-semibold px-8 py-2.5 text-white rounded hover:bg-red-700 transition-colors mt-12" data-modal="leave-request">Оставить заявку</button>
+                    <button class="bg-red-button font-semibold px-8 py-2.5 text-white rounded hover:bg-red-700 transition-colors mt-12 cursor-pointer" data-modal="leave-request">Оставить заявку</button>
                 </div>
             </section>
 
@@ -241,10 +463,10 @@
     </footer>
 
     <script type="module">
-        import { FaqModule } from './assets/js/modules/faq.js';
+        import { initFaq } from './assets/js/modules/faq.js';
 
         document.addEventListener('DOMContentLoaded', () => {
-            new FaqModule('faq-container', { theme: 'dark' });
+            initFaq();
 
             // Mobile Menu Logic
             const menuToggle = document.getElementById('mobile-menu-toggle');
@@ -264,8 +486,8 @@
     </script>
     
     <!-- Modal -->
-    <div id="modal-backdrop" class="fixed inset-0 bg-black/80 z-[60] hidden flex justify-center items-center backdrop-blur-sm">
-        <div class="bg-back-black-sections text-white p-6 md:p-8 rounded-lg max-w-md w-full mx-4 relative shadow-2xl">
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/80 z-[60] flex justify-center items-center backdrop-blur-sm transition-all duration-300 opacity-0 invisible pointer-events-none">
+        <div id="modal-content" class="rounded-2xl custom-modal bg-back-black-sections md:p-8 sx:p-5 transform scale-95 transition-all duration-300">
             <button id="modal-close" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
@@ -289,7 +511,7 @@
                     </label>
                 </div>
 
-                <button type="submit" class="bg-red-button text-white py-3 rounded font-bold hover:bg-red-700 transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                <button type="submit" class="bg-red-button text-white py-3 rounded font-bold hover:bg-red-700 transition-colors mt-2 disabled:opacity-50 cursor-pointer">
                     Оставить заявку
                 </button>
             </form>

@@ -1,6 +1,6 @@
-import gsap from 'https://cdn.skypack.dev/gsap';
-import { ScrollTrigger } from 'https://cdn.skypack.dev/gsap/ScrollTrigger';
-import SplitType from 'https://cdn.skypack.dev/split-type';
+import gsap from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm';
+import ScrollTrigger from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger/+esm';
+import SplitType from 'https://cdn.jsdelivr.net/npm/split-type@0.3.4/+esm';
 
 gsap.registerPlugin(ScrollTrigger);
 

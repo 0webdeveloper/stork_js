@@ -18,12 +18,10 @@ export async function fetchApi(endpoint, params = {}) {
         const response = await fetch(url, {
             headers: {
                 'Accept': 'application/json',
+                // 'Authorization': ... if needed
             }
         });
-        if (!response.ok) {
-            console.warn('API response not OK', response.status, url.toString());
-            return null;
-        }
+        if (!response.ok) throw new Error(`API Error: ${response.status}`);
         return await response.json();
     } catch (error) {
         console.error('Fetch error:', error);

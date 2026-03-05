@@ -102,45 +102,88 @@
                 <ul class="flex text-white font-semibold flex-wrap">
                     <li><a href="../index.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Проект</a></li>
                     <li><a href="../income.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Доходы</a></li>
-                    <li><a href="index.html" class="px-5 py-3.5 hover:text-white/70 transition-all text-red-500">Лоты</a></li>
+                    <li><a href="index.html" class="px-5 py-3.5 hover:text-white/70 transition-all bg-[#ca1f26] rounded-lg">Лоты</a></li>
                     <li><a href="../questions.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Вопросы</a></li>
                     <li><a href="../developer.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Девелопер</a></li>
                     <li><a href="../payment.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Оплата</a></li>
                     <li><a href="../contacts.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Контакты</a></li>
                 </ul>
 
-                <button class="bg-red-button font-semibold px-8 py-2.5 text-white rounded hover:bg-red-700 transition-colors" data-modal="learn-more">
+                <button class="bg-red-button font-semibold px-8 py-2.5 text-white rounded hover:bg-red-700 transition-colors cursor-pointer" data-modal="learn-more">
                     Узнать больше
                 </button>
             </div>
         </nav>
         
         <!-- Mobile Nav Bar -->
-        <div class="lg:hidden p-4 flex justify-between items-center bg-black/50 backdrop-blur-sm fixed w-full top-0 z-50">
-             <a href="../index.html" class="block font-bold text-xl">STORK</a>
-             <button id="mobile-menu-toggle" class="text-white">
-                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-             </button>
+        <div class="lg:hidden px-4 py-3 flex justify-between items-center bg-white fixed w-full top-0 z-50 shadow-sm">
+            <button id="mobile-menu-toggle" class="text-black">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <div class="flex gap-6 items-center">
+                <a href="https://yandex.ru/maps/-/CDdGV-3L" target="_blank" class="text-black">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                </a>
+                <a href="tel:+74742516393" class="text-black">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    </svg>
+                </a>
+            </div>
         </div>
 
         <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-40 transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center">
-            <button id="mobile-menu-close" class="absolute top-6 right-6 text-white">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <nav class="flex flex-col gap-6 text-center text-2xl font-bold">
-                <a href="../index.html" class="hover:text-red-500">Проект</a>
-                <a href="../income.html" class="hover:text-red-500">Доходы</a>
-                <a href="index.html" class="hover:text-red-500 text-red-500">Лоты</a>
-                <a href="../questions.html" class="hover:text-red-500">Вопросы</a>
-                <a href="../developer.html" class="hover:text-red-500">Девелопер</a>
-                <a href="../payment.html" class="hover:text-red-500">Оплата</a>
-                <a href="../contacts.html" class="hover:text-red-500">Контакты</a>
-            </nav>
+        <div id="mobile-menu" class="fixed inset-0 bg-[#1D1D1D] z-[60] transform translate-x-full transition-transform duration-300 flex flex-col h-full overflow-y-auto">
+            <div class="p-4 flex justify-end items-center">
+                <button id="mobile-menu-close" class="text-white p-2">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="px-6 flex flex-col gap-6 pb-8">
+                <nav class="flex flex-col gap-4 text-xl font-bold text-white">
+                    <a href="../index.html" class="hover:text-red-500 transition-colors px-4 py-2">Проект</a>
+                    <a href="../income.html" class="hover:text-red-500 transition-colors px-4 py-2">Доходы</a>
+                    <a href="index.html" class="bg-red-button text-white px-4 py-2 rounded-lg w-fit">Лоты</a>
+                    <a href="../questions.html" class="hover:text-red-500 transition-colors px-4 py-2">Вопросы</a>
+                    <a href="../developer.html" class="hover:text-red-500 transition-colors px-4 py-2">Девелопер</a>
+                    <a href="../payment.html" class="hover:text-red-500 transition-colors px-4 py-2">Оплата</a>
+                    <a href="../contacts.html" class="hover:text-red-500 transition-colors px-4 py-2">Контакты</a>
+                </nav>
+                
+                <button class="bg-red-button text-white font-bold py-3.5 rounded-lg w-full" data-modal="leave-request" data-hidden-page="MobileMenu" data-hidden-context="Button">
+                    Связаться с менеджером
+                </button>
+
+                <div class="flex gap-4">
+                    <a href="https://vk.com/stork_hotels" target="_blank" class="w-10 h-10 flex items-center justify-center rounded bg-[#0077FF]">
+                         <svg class="w-6 h-6 fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.162 18.994c.609 0 .858-.406.851-1.184 0-1.308.502-2.325 2.123-2.325 1.7 0 1.303 1.3 2.174 2.315.356.575 1.053 1.194 2.072 1.194 1.192 0 2.383.006 3.57.006.961 0 1.144-.529.705-1.577-.55-1.376-2.572-3.626-2.76-4.047-.417-.842.171-1.09 1.171-2.43 1.144-1.518 2.502-3.13 2.32-4.24-.078-.529-1.215-.45-1.996-.402-1.086.068-1.55.02-2.123.078-1.09.112-1.538.666-2.303 1.858-.55 1.166-2.174 3.692-2.426 3.86-.39.232-.505.02-.505-.884 0-2.22.42-3.418-.737-4.144-.575-.36-1.15-.36-1.85-.352-1.782.02-3.17.06-3.766.754-.256.3-.025.75.906.88 1.13.175 1.17 1.44 1.162 3.196-.006 1.054-.306 2.053-1.054 2.143-.88.106-2.366-2.72-3.08-4.75-.246-.713-1.004-1.35-1.85-1.402-.85-.054-1.64 0-1.64 0-.66 0-.76.326-.76.703 0 .66.786 2.146 3.18 5.488 2.21 3.09 5.37 5.756 8.24 5.666z"/></svg>
+                    </a>
+                    <a href="https://t.me/stork_hotels" target="_blank" class="w-10 h-10 flex items-center justify-center rounded bg-[#2AABEE]">
+                        <svg class="w-5 h-5 fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </a>
+                </div>
+                
+                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center overflow-hidden">
+                    <img src="../assets/image/urban.svg" alt="Urban Awards" class="w-full h-full object-cover">
+                </div>
+                
+                <div class="text-white font-bold">
+                    <p class="mb-1"><a href="tel:+74742516393">+7 (4742) 51-63-93</a></p>
+                    <p>улица М.И. Неделина, 6</p>
+                </div>
+                
+                <div class="text-[#8C949B] text-xs mt-4">
+                    <p>ООО «РСС» ИНН: 4826152621, ОГРН: 1224800000754</p>
+                    <p class="mt-2">Юридический адрес: 398016, г. Липецк, ул. Космонавтов, д. 26/1, этаж 2, помещ./каб. 1/8</p>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main class="pt-24 md:pt-40 container mx-auto px-4 md:px-15 flex-grow">
+    <main class="py-24 md:py-40 container mx-auto px-4 md:px-15 flex-grow">
         <a href="index.html" class="text-gray-400 hover:text-white mb-8 inline-flex items-center gap-2 transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
             Вернуться к выбору
@@ -161,18 +204,28 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-back-white-sections text-back-black-sections py-16 mt-24">
+    <footer class="bg-back-white-sections text-back-black-sections py-16 mt-auto">
         <div class="container mx-auto px-4 md:px-15">
+            <h2 class="text-2xl font-bold md:hidden mb-8">Контакты</h2>
+            
             <div class="flex justify-between items-start md:flex-row flex-col gap-8">
+                <!-- Ained Logo -->
                 <div class="flex gap-4 text-sm order-4 md:order-1 items-center">
-                    <a target="_blank" href="https://ained-digital.ru/" class="font-bold text-xl">AINED</a>
+                    <a target="_blank" href="https://ained-digital.ru/" class="font-bold text-xl">
+                        <svg viewBox="0 0 128 36" xmlns="http://www.w3.org/2000/svg" class="sx:w-24 sx:h-6 md:w-32 md:h-9"><path fill-rule="evenodd" clip-rule="evenodd" d="M51.5037 6.49993C52.481 8.35228 51.7716 10.6462 49.9193 11.6234L5.56245 35.0259C3.7101 36.0032 1.41623 35.2938 0.438941 33.4415C-0.538349 31.5891 0.171025 29.2952 2.02337 28.318L46.3802 4.9155C48.2326 3.93821 50.5264 4.64759 51.5037 6.49993Z" fill="url(#paint0_linear_1285_15814)"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M32.2112 0.602307C34.2496 1.0835 35.5119 3.12597 35.0307 5.16429L28.5589 32.5783C28.0777 34.6166 26.0352 35.8789 23.9969 35.3977C21.9586 34.9165 20.6963 32.874 21.1775 30.8357L27.6493 3.42172C28.1305 1.38341 30.1729 0.121111 32.2112 0.602307Z" fill="url(#paint1_linear_1285_15814)"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M50.822 5.57823C52.308 7.05415 52.316 9.4552 50.8401 10.9411L27.5588 34.38C26.0829 35.8659 23.6818 35.874 22.1959 34.3981C20.71 32.9221 20.7019 30.5211 22.1778 29.0352L45.4592 5.59631C46.9351 4.1104 49.3361 4.10231 50.822 5.57823Z" fill="url(#paint2_linear_1285_15814)"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M34.0302 1.61899C35.5065 3.10449 35.4991 5.50553 34.0136 6.98188L6.46628 34.3595C4.98079 35.8359 2.57974 35.8284 1.1034 34.3429C-0.372944 32.8575 -0.365526 30.4564 1.11997 28.9801L28.6673 1.60242C30.1528 0.126079 32.5539 0.133498 34.0302 1.61899Z" fill="url(#paint3_linear_1285_15814)"></path><path d="M59.9189 18.0006L65.8165 5.16797H68.0918L73.9893 18.0006H71.1498L69.9484 15.2156H63.9599L62.7767 18.0006H59.9189ZM66.9268 8.17135L64.9064 13.0132H69.0201L66.9632 8.17135H66.9268Z"></path><path d="M75.0984 18.0006V5.16797H77.9198V18.0006H75.0984Z"></path><path d="M80.4844 18.0006V5.16797H82.5777L88.9849 13.3408V5.16797H91.6061V18.0006H89.531L83.1056 9.80956V18.0006H80.4844Z"></path><path d="M94.1895 18.0006V5.16797H102.981V7.37045H96.8834V10.3738H102.581V12.5945H96.8834V15.7981H102.981V18.0006H94.1895Z"></path><path d="M105.21 18.0006V5.16797H110.234C112.419 5.16797 114.111 5.72617 115.313 6.84258C116.514 7.94686 117.115 9.52439 117.115 11.5752C117.115 13.626 116.514 15.2096 115.313 16.326C114.111 17.4424 112.419 18.0006 110.234 18.0006H105.21ZM108.032 15.6889H110.07C112.801 15.6889 114.166 14.3177 114.166 11.5752C114.166 8.84484 112.801 7.47966 110.07 7.47966H108.032V15.6889Z"></path><path d="M61.7756 34.6861V21.8534H65.9075C67.9462 21.8534 69.5176 22.3995 70.6219 23.4916C71.7383 24.5838 72.2965 26.1734 72.2965 28.2606C72.2965 30.3478 71.7383 31.9436 70.6219 33.0479C69.5176 34.14 67.9462 34.6861 65.9075 34.6861H61.7756ZM62.8859 33.7031H65.8165C69.3356 33.7031 71.0952 31.889 71.0952 28.2606C71.0952 24.6444 69.3356 22.8364 65.8165 22.8364H62.8859V33.7031Z"></path><path d="M75.1251 34.6861V21.8534H76.2355V34.6861H75.1251Z"></path><path d="M85.2842 34.8317C83.2576 34.8317 81.7165 34.2553 80.6608 33.1025C79.605 31.9496 79.0772 30.3357 79.0772 28.2606C79.0772 26.9137 79.3077 25.7487 79.7689 24.7658C80.2421 23.7829 80.9156 23.0305 81.7893 22.5087C82.6752 21.9748 83.743 21.7078 84.9929 21.7078C86.8496 21.7078 88.33 22.2599 89.4343 23.3642L88.9428 24.2743C88.3482 23.7283 87.7354 23.3399 87.1044 23.1094C86.4734 22.8667 85.7635 22.7453 84.9747 22.7453C83.4579 22.7453 82.2929 23.2307 81.4799 24.2015C80.6668 25.1602 80.2603 26.5132 80.2603 28.2606C80.2603 30.0687 80.679 31.446 81.5163 32.3926C82.3657 33.3391 83.6277 33.8123 85.3024 33.8123C86.443 33.8123 87.5048 33.6182 88.4878 33.2299V29.0615H85.0839V28.115H89.4889V33.958C89.1734 34.1279 88.779 34.2795 88.3057 34.413C87.8446 34.5465 87.3471 34.6497 86.8132 34.7225C86.2914 34.7953 85.7817 34.8317 85.2842 34.8317Z"></path><path d="M92.7231 34.6861V21.8534H93.8334V34.6861H92.7231Z"></path><path d="M100.352 34.6861V22.8546H95.5648V21.8534H106.268V22.8546H101.481V34.6861H100.352Z"></path><path d="M105.423 34.6861L111.011 21.8534H112.012L117.582 34.6861H116.417L114.943 31.264H108.062L106.606 34.6861H105.423ZM111.484 23.2368L108.481 30.2993H114.524L111.521 23.2368H111.484Z"></path><path d="M119.742 34.6861V21.8534H120.852V33.6849H127.551V34.6861H119.742Z"></path><defs><linearGradient id="paint0_linear_1285_15814" x1="7.13175" y1="30.9649" x2="34.3916" y2="15.5177" gradientUnits="userSpaceOnUse"><stop stop-color="#1DE9B6"></stop><stop offset="1" stop-color="#536DFE"></stop></linearGradient><linearGradient id="paint1_linear_1285_15814" x1="29.848" y1="11.2759" x2="25.0018" y2="28.8434" gradientUnits="userSpaceOnUse"><stop stop-color="#536DFE"></stop><stop offset="1" stop-color="#1DE9B6"></stop></linearGradient><linearGradient id="paint2_linear_1285_15814" x1="30.4539" y1="25.5122" x2="48.0214" y2="8.55048" gradientUnits="userSpaceOnUse"><stop stop-color="#1DE9B6"></stop><stop offset="1" stop-color="#536DFE"></stop></linearGradient><linearGradient id="paint3_linear_1285_15814" x1="12.2811" y1="23.0877" x2="31.0601" y2="3.70287" gradientUnits="userSpaceOnUse"><stop stop-color="#1DE9B6"></stop><stop offset="1" stop-color="#536DFE"></stop></linearGradient></defs></svg>
+                    </a>
                     <p class="text-gray-500 text-xs">Создание сайта — <br>Ained Digital</p>
                 </div>
 
+                <!-- Contacts -->
                 <div class="font-semibold flex flex-col order-1 md:order-2 gap-2">
                     <div class="flex gap-2">
-                        <a href="https://vk.com/stork_hotels" target="_blank" class="text-blue-600 hover:text-blue-800">VK</a>
-                        <a href="https://t.me/stork_hotels" target="_blank" class="text-blue-400 hover:text-blue-600">TG</a>
+                        <a href="https://vk.com/stork_hotels" target="_blank" class="text-blue-600 hover:text-blue-800">
+                            <svg viewBox="0 0 49 48" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-[#4F46E5] opacity-80 hover:opacity-100 transition-opacity"><path d="M0.550781 23.04C0.550781 12.1788 0.550781 6.74826 3.92491 3.37413C7.29904 0 12.7296 0 23.5908 0H25.5108C36.3719 0 41.8025 0 45.1767 3.37413C48.5508 6.74826 48.5508 12.1788 48.5508 23.04V24.96C48.5508 35.8212 48.5508 41.2517 45.1767 44.6259C41.8025 48 36.3719 48 25.5108 48H23.5908C12.7296 48 7.29904 48 3.92491 44.6259C0.550781 41.2517 0.550781 35.8212 0.550781 24.96V23.04Z"></path><path d="M26.176 34.7002C15.3661 34.7002 8.80775 27.1863 8.55078 14.7002H14.0257C14.1964 23.8721 18.3615 27.7588 21.5544 28.558V14.7002H26.8012V22.6157C29.8809 22.2737 33.1045 18.6733 34.188 14.7002H39.3522C38.5257 19.5859 35.0164 23.1863 32.5369 24.6714C35.0183 25.8721 39.0109 29.0153 40.5508 34.7002H34.8745C33.676 30.9 30.74 27.9567 26.8031 27.5571V34.7002H26.176Z" fill="white"></path></svg>
+                        </a>
+                        <a href="https://t.me/stork_hotels" target="_blank" class="text-blue-400 hover:text-blue-600">
+                            <svg viewBox="0 0 49 48" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-[#2AABEE] opacity-80 hover:opacity-100 transition-opacity"><path d="M0.550781 16.6957C0.550781 10.8516 0.550781 7.92961 1.6881 5.69749C2.68852 3.73406 4.28484 2.13774 6.24827 1.13732C8.48039 0 11.4024 0 17.2464 0H31.8551C37.6992 0 40.6212 0 42.8533 1.13732C44.8167 2.13774 46.413 3.73406 47.4135 5.69749C48.5508 7.92961 48.5508 10.8516 48.5508 16.6957V31.3043C48.5508 37.1484 48.5508 40.0704 47.4135 42.3025C46.413 44.2659 44.8167 45.8623 42.8533 46.8627C40.6212 48 37.6992 48 31.8551 48H17.2464C11.4024 48 8.48039 48 6.24827 46.8627C4.28484 45.8623 2.68852 44.2659 1.6881 42.3025C0.550781 40.0704 0.550781 37.1484 0.550781 31.3043V16.6957Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M11.4129 23.7469C18.4093 20.6986 23.0748 18.689 25.4091 17.7181C32.0742 14.9459 33.4591 14.4643 34.3618 14.4484C34.5603 14.4449 35.0043 14.4941 35.2918 14.7274C35.5346 14.9245 35.6014 15.1906 35.6334 15.3774C35.6653 15.5642 35.7052 15.9897 35.6735 16.3222C35.3123 20.1172 33.7495 29.3265 32.9544 33.577C32.618 35.3755 31.9556 35.9785 31.3142 36.0375C29.9205 36.1658 28.8622 35.1165 27.5123 34.2316C25.4 32.8469 24.2067 31.985 22.1563 30.6338C19.7867 29.0723 21.3228 28.2141 22.6732 26.8115C23.0266 26.4445 29.1674 20.859 29.2863 20.3523C29.3011 20.2889 29.3149 20.0527 29.1746 19.9279C29.0343 19.8032 28.8272 19.8459 28.6777 19.8798C28.4658 19.9279 25.0914 22.1583 18.5544 26.5709C17.5965 27.2287 16.729 27.5491 15.9516 27.5323C15.0947 27.5138 13.4463 27.0478 12.2209 26.6495C10.7179 26.1609 9.52339 25.9026 9.62741 25.0729C9.68159 24.6407 10.2767 24.1987 11.4129 23.7469Z" fill="white"></path><defs><linearGradient id="paint0_linear_2137_21868" x1="24.5508" y1="0" x2="24.5508" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#2AABEE"></stop><stop offset="1" stop-color="#229ED9"></stop></linearGradient></defs></svg>
+                        </a>
                     </div>
                     <div>
                         <a href="tel:+74742516393" class="block hover:underline">+7 (4742) 51-63-93</a>
@@ -180,14 +233,16 @@
                     </div>
                 </div>
 
+                <!-- Legal -->
                 <div class="flex flex-col font-semibold order-2 md:order-3">
                     <p>©Stork Hotel, <span id="year">2024</span></p>
                     <a href="#" class="hover:underline text-sm">Политика конфиденциальности</a>
                     <a href="#" class="hover:underline text-sm">Согласие пользователя</a>
-                    <a href="../documents.html" class="hover:underline text-sm text-red-600">Проектные декларации</a>
+                    <a href="documents.html" class="hover:underline text-sm text-red-600">Проектные декларации</a>
                 </div>
-                
-                 <div class="flex flex-col text-xs text-gray-500 md:hidden order-3">
+
+                <!-- Legal Mobile -->
+                <div class="flex flex-col text-xs text-gray-500 md:hidden order-3">
                     <p>ООО «РСС» ИНН: 4826152621</p>
                     <p>г. Липецк, ул. Космонавтов, д. 26/1</p>
                 </div>
@@ -196,14 +251,37 @@
     </footer>
 
     <!-- Modals (Hidden) -->
-    <div id="modal-backdrop" class="fixed inset-0 bg-black/80 z-[60] hidden flex justify-center items-center">
-        <div class="bg-white text-black p-8 rounded-lg max-w-md w-full mx-4 relative">
-            <button id="modal-close" class="absolute top-4 right-4 text-gray-500 hover:text-black">✕</button>
-            <h2 class="text-2xl font-bold mb-4">Оставить заявку</h2>
-            <form class="flex flex-col gap-4">
-                <input type="text" placeholder="Имя" class="border p-2 rounded">
-                <input type="tel" placeholder="Телефон" class="border p-2 rounded">
-                <button type="submit" class="bg-red-button text-white py-3 rounded font-bold hover:bg-red-700">Отправить</button>
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/80 z-[60] flex justify-center items-center backdrop-blur-sm transition-all duration-300 opacity-0 invisible pointer-events-none">
+        <div id="modal-content" class="rounded-2xl custom-modal bg-back-black-sections md:p-8 sx:p-5 transform scale-95 transition-all duration-300">
+            <button id="modal-close" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-2xl md:text-3xl font-unbounded mb-2 uppercase text-white">Оставить заявку</h2>
+            <p id="modal-subtitle" class="text-gray-400 mb-6 text-sm md:text-base">Оставьте свои данные, чтобы получить наилучшее предложение</p>
+            
+            <form class="flex flex-col gap-4" id="modal-form">
+                <input type="hidden" name="id" id="modal-lot-id">
+                <input type="hidden" name="title" id="modal-lot-title">
+                
+                <div>
+                    <label class="block mb-2 text-sm text-gray-300">Ваши данные</label>
+                    <input type="text" name="name" placeholder="ФИО" class="bg-black w-full border border-gray-600 p-3 rounded-lg text-white focus:border-white focus:outline-none transition-colors" required>
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm text-gray-300">Ваш телефон</label>
+                    <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" class="bg-black w-full border border-gray-600 p-3 rounded-lg text-white focus:border-white focus:outline-none transition-colors" required>
+                </div>
+                
+                <div class="flex items-start gap-3 mt-2">
+                    <input type="checkbox" id="privacy-check" class="mt-1 w-4 h-4 rounded border-gray-600 text-red-600 focus:ring-red-500 bg-transparent" checked required>
+                    <label for="privacy-check" class="text-xs text-gray-400 leading-tight">
+                        Я ознакомлен(-а) с <a href="#" class="underline hover:text-white">Политикой конфиденциальности</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="bg-red-button text-white py-3 rounded font-bold hover:bg-red-700 transition-colors mt-2 disabled:opacity-50 cursor-pointer">
+                    Оставить заявку
+                </button>
             </form>
         </div>
     </div>
@@ -270,12 +348,9 @@
             try {
                 const blockId = facadeParam || null;
 
-                const [facadeInfo, floorCategories, categoryInfo, decorations, associates, lotsResponse] = await Promise.all([
-                    blockId ? fetchApi('/facade', { block_id: blockId }) : Promise.resolve(null),
-                    blockId && floorParam ? fetchApi('/categories', { block_id: blockId, floor: floorParam }) : Promise.resolve(null),
+                const [categoryInfo, decorations, lotsResponse] = await Promise.all([
                     fetchApi('/categories/info', { category_id: categoryId }),
                     fetchApi('/decorations'),
-                    fetchApi('/categories/associate', { id: categoryId }),
                     fetchApi('/lots/', Object.assign(
                         { category_id: categoryId, page: 1 },
                         blockId ? { block_id: blockId } : {},
@@ -285,11 +360,8 @@
 
                 const lots = lotsResponse && Array.isArray(lotsResponse.data) ? lotsResponse.data : [];
                 renderLayoutsPage(container, {
-                    facadeInfo,
-                    floorCategories,
                     categoryInfo,
                     decorations,
-                    associates,
                     lots
                 });
             } catch (e) {
@@ -299,16 +371,27 @@
         }
 
         function renderLot(lot, container, relatedLots) {
-            const title = formatTitle(lot.name || lot.category?.current_name || 'Лот');
+            let title = formatTitle(lot.category?.name || lot.category?.current_name || 'Апартаменты');
+            if (lot.number_object) {
+                title += ` №${lot.number_object}`;
+            } else if (lot.name) {
+                title = formatTitle(lot.name);
+            }
+
             const categoryName = lot.category && (lot.category.name || lot.category.current_name) ? (lot.category.name || lot.category.current_name) : 'Апартаменты';
             const status = lot.status?.name || 'Свободно';
             const decoration = lot.decoration?.name || 'WHITE-BOX';
 
+
             let blockName = '-';
-            if (typeof lot.block === 'number' || typeof lot.block === 'string') {
+            if (Array.isArray(lot.block) && lot.block.length > 0) {
+                blockName = lot.block[0].name || lot.block[0].title || lot.block[0].code || '-';
+            } else if (lot.block && lot.block.name) {
+                blockName = lot.block.name;
+            } else if (lot.block && (lot.block.title || lot.block.code)) {
+                blockName = lot.block.title || lot.block.code;
+            } else if (typeof lot.block === 'string' || typeof lot.block === 'number') {
                 blockName = lot.block;
-            } else if (lot.block && (lot.block.name || lot.block.title || lot.block.code)) {
-                blockName = lot.block.name || lot.block.title || lot.block.code;
             } else if (lot.block_name) {
                 blockName = lot.block_name;
             }
@@ -318,54 +401,49 @@
 
             container.innerHTML = `
                 <div class="space-y-16 animate-fade-in">
-                    <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-10 md:gap-20 items-start">
+                    <div class="space-y-3">
+                        <h1 class="text-3xl md:text-5xl lg:text-6xl font-unbounded leading-tight uppercase">
+                            ${title}
+                        </h1>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
                         <div class="flex flex-col gap-8">
-                            <div class="space-y-3">
-                                <div class="text-sm text-gray-500 uppercase tracking-[0.2em]">
-                                    ${categoryName}
-                                </div>
-                                <h1 class="text-3xl md:text-5xl lg:text-6xl font-unbounded leading-tight">
-                                    ${title}
-                                </h1>
-                            </div>
-
-                            <div class="grid grid-cols-2 lg:grid-cols-3 gap-6 text-sm md:text-base">
+                            <div class="grid lg:grid-cols-2 gap-6 text-sm md:text-base">
                                 <div class="space-y-1">
-                                    <p class="text-gray-500 uppercase tracking-[0.18em] text-xs">Площадь</p>
-                                    <p class="text-xl md:text-2xl font-bold">${area}</p>
+                                    <p class="text-gray-300 uppercase tracking-[0.18em] text-xs">Площадь</p>
+                                    <p class="text-xl md:text-3xl uppercase font-unbounded">${area}</p>
                                 </div>
                                 <div class="space-y-1">
-                                    <p class="text-gray-500 uppercase tracking-[0.18em] text-xs">Этаж</p>
-                                    <p class="text-xl md:text-2xl font-bold">${floor}</p>
+                                    <p class="text-gray-300 uppercase tracking-[0.18em] text-xs">Этаж</p>
+                                    <p class="text-xl md:text-3xl uppercase font-unbounded">${floor}</p>
                                 </div>
                                 <div class="space-y-1">
-                                    <p class="text-gray-500 uppercase tracking-[0.18em] text-xs">Блок</p>
-                                    <p class="text-xl md:text-2xl font-bold">${blockName}</p>
+                                    <p class="text-gray-300 uppercase tracking-[0.18em] text-xs">Блок</p>
+                                    <p class="text-xl md:text-3xl uppercase font-unbounded">${blockName}</p>
                                 </div>
                                 <div class="space-y-1">
-                                    <p class="text-gray-500 uppercase tracking-[0.18em] text-xs">Отделка</p>
-                                    <p class="text-xl md:text-2xl font-bold">${decoration}</p>
+                                    <p class="text-gray-300 uppercase tracking-[0.18em] text-xs">Отделка</p>
+                                    <p class="text-xl md:text-3xl uppercase font-unbounded">${decoration}</p>
                                 </div>
                                 <div class="space-y-1">
-                                    <p class="text-gray-500 uppercase tracking-[0.18em] text-xs">Статус</p>
-                                    <p class="text-xl md:text-2xl font-bold">${status}</p>
+                                    <p class="text-gray-300 uppercase tracking-[0.18em] text-xs">Категория лота</p>
+                                    <p class="text-xl md:text-3xl uppercase font-unbounded">${categoryName}</p>
                                 </div>
                                 <div class="space-y-1">
-                                    <p class="text-gray-500 uppercase tracking-[0.18em] text-xs">Категория лота</p>
-                                    <p class="text-xl md:text-2xl font-bold">${categoryName}</p>
+                                    <p class="text-gray-300 uppercase tracking-[0.18em] text-xs">Статус</p>
+                                    <p class="text-xl md:text-3xl uppercase font-unbounded">${status}</p>
                                 </div>
                             </div>
 
                             <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-                                <button class="inline-flex items-center justify-center gap-3 bg-red-button text-white px-10 py-4 rounded font-bold hover:bg-red-700 transition-colors text-lg w-full sm:w-auto text-center" data-modal="leave-request">
+                                <button class="inline-flex items-center justify-center gap-3 bg-red-button text-white px-10 py-4 rounded font-bold hover:bg-red-700 transition-colors text-lg w-full sm:w-auto text-center cursor-pointer" data-modal="leave-request">
                                     <span>Инвестировать</span>
                                 </button>
                             </div>
                         </div>
 
                         <div class="w-full">
-                            <div id="lot-gallery" class="relative w-full rounded-2xl overflow-hidden bg-gray-900 aspect-[16/9] md:h-[420px] flex items-center justify-center">
-                            </div>
+                            <div id="lot-gallery" class="relative w-full rounded-2xl overflow-hidden aspect-[16/9] md:h-[420px] flex items-center justify-center"></div>
                         </div>
                     </div>
 
@@ -374,27 +452,11 @@
                         <div id="lot-related" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         </div>
                     </div>
-
-                    <div class="space-y-6 bg-back-white-sections text-back-black-sections -mx-4 md:-mx-15 px-4 md:px-15 py-12 md:py-16">
-                        <h2 class="text-2xl md:text-3xl font-unbounded mb-4 md:mb-8">Варианты покупки</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-                            <div class="relative overflow-hidden rounded-2xl h-56 md:h-72">
-                                <img src="https://stork-hotels.ru/_nuxt/payment.ORYe8UMS.jpg" alt="100% оплата" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-6 flex items-end">
-                                    <p class="text-white text-xl font-bold">100% оплата</p>
-                                </div>
-                            </div>
-                            <div class="relative overflow-hidden rounded-2xl h-56 md:h-72">
-                                <img src="https://stork-hotels.ru/_nuxt/payment-2.C3wVrhaV.jpg" alt="Рассрочка" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-6 flex items-end">
-                                    <p class="text-white text-xl font-bold">Рассрочка</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             `;
             
+
+
             if (lot.pictures && lot.pictures.length > 0) {
                 new Gallery('lot-gallery', lot.pictures);
             } else {

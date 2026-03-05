@@ -113,36 +113,74 @@
                     <li><a href="./lots/index.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Лоты</a></li>
                     <li><a href="./questions.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Вопросы</a></li>
                     <li><a href="./developer.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Девелопер</a></li>
-                    <li><a href="./payment.html" class="px-5 py-3.5 text-red-500 transition-all">Оплата</a></li>
+                    <li><a href="./payment.html" class="px-5 py-3.5 hover:text-white/70 transition-all bg-[#ca1f26] rounded-lg">Оплата</a></li>
                     <li><a href="./contacts.html" class="px-5 py-3.5 hover:text-white/70 transition-all">Контакты</a></li>
                 </ul>
 
-                <button class="bg-red-button font-semibold px-8 py-2.5 text-white rounded hover:bg-red-700 transition-colors" data-modal="learn-more">
+                <button class="bg-red-button font-semibold px-8 py-2.5 text-white rounded hover:bg-red-700 transition-colors cursor-pointer" data-modal="learn-more" data-hidden-page="Оплата" data-hidden-context="Меню">
                     Узнать больше
                 </button>
             </div>
         </nav>
         
-        <div class="lg:hidden p-4 flex justify-between items-center bg-black/50 backdrop-blur-sm fixed w-full top-0 z-50">
-             <a href="./index.html" class="block font-bold text-xl">STORK</a>
-             <button id="mobile-menu-toggle" class="text-white">
-                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-             </button>
+        <div class="lg:hidden px-4 py-3 flex justify-between items-center bg-white fixed w-full top-0 z-50 shadow-sm">
+            <button id="mobile-menu-toggle" class="text-black">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <div class="flex gap-6 items-center">
+                <a href="https://yandex.ru/maps/-/CDdGV-3L" target="_blank" class="text-black">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                </a>
+                <a href="tel:+74742516393" class="text-black">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    </svg>
+                </a>
+            </div>
         </div>
 
-        <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-40 transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center">
-            <button id="mobile-menu-close" class="absolute top-6 right-6 text-white">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <nav class="flex flex-col gap-6 text-center text-2xl font-bold">
-                <a href="./index.html" class="hover:text-red-500">Проект</a>
-                <a href="./income.html" class="hover:text-red-500">Доходы</a>
-                <a href="./lots/index.html" class="hover:text-red-500">Лоты</a>
-                <a href="./questions.html" class="hover:text-red-500">Вопросы</a>
-                <a href="./developer.html" class="hover:text-red-500">Девелопер</a>
-                <a href="./payment.html" class="text-red-500">Оплата</a>
-                <a href="./contacts.html" class="hover:text-red-500">Контакты</a>
-            </nav>
+        <div id="mobile-menu" class="fixed inset-0 bg-[#1D1D1D] z-[60] transform translate-x-full transition-transform duration-300 flex flex-col h-full overflow-y-auto">
+            <div class="p-4 flex justify-end items-center">
+                <button id="mobile-menu-close" class="text-white p-2">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="px-6 flex flex-col gap-6 pb-8">
+                <nav class="flex flex-col gap-4 text-xl font-bold text-white">
+                    <a href="index.html" class="bg-red-button text-white px-4 py-2 rounded-lg w-fit">Проект</a>
+                    <a href="income.html" class="hover:text-red-500 transition-colors px-4 py-2">Доходы</a>
+                    <a href="lots/index.html" class="hover:text-red-500 transition-colors px-4 py-2">Лоты</a>
+                    <a href="questions.html" class="hover:text-red-500 transition-colors px-4 py-2">Вопросы</a>
+                    <a href="developer.html" class="hover:text-red-500 transition-colors px-4 py-2">Девелопер</a>
+                    <a href="payment.html" class="hover:text-red-500 transition-colors px-4 py-2">Оплата</a>
+                    <a href="contacts.html" class="hover:text-red-500 transition-colors px-4 py-2">Контакты</a>
+                </nav>
+                <button class="bg-red-button text-white font-bold py-3.5 rounded-lg w-full" data-modal="leave-request" data-hidden-page="MobileMenu" data-hidden-context="Button">
+                    Связаться с менеджером
+                </button>
+                <div class="flex gap-4">
+                    <a href="https://vk.com/stork_hotels" target="_blank" class="w-10 h-10 flex items-center justify-center rounded bg-[#0077FF]">
+                        <svg class="w-6 h-6 fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.162 18.994c.609 0 .858-.406.851-1.184 0-1.308.502-2.325 2.123-2.325 1.7 0 1.303 1.3 2.174 2.315.356.575 1.053 1.194 2.072 1.194 1.192 0 2.383.006 3.57.006.961 0 1.144-.529.705-1.577-.55-1.376-2.572-3.626-2.76-4.047-.417-.842.171-1.09 1.171-2.43 1.144-1.518 2.502-3.13 2.32-4.24-.078-.529-1.215-.45-1.996-.402-1.086.068-1.55.02-2.123.078-1.09.112-1.538.666-2.303 1.858-.55 1.166-2.174 3.692-2.426 3.86-.39.232-.505.02-.505-.884 0-2.22.42-3.418-.737-4.144-.575-.36-1.15-.36-1.85-.352-1.782.02-3.17.06-3.766.754-.256.3-.025.75.906.88 1.13.175 1.17 1.44 1.162 3.196-.006 1.054-.306 2.053-1.054 2.143-.88.106-2.366-2.72-3.08-4.75-.246-.713-1.004-1.35-1.85-1.402-.85-.054-1.64 0-1.64 0-.66 0-.76.326-.76.703 0 .66.786 2.146 3.18 5.488 2.21 3.09 5.37 5.756 8.24 5.666z"/></svg>
+                    </a>
+                    <a href="https://t.me/stork_hotels" target="_blank" class="w-10 h-10 flex items-center justify-center rounded bg-[#2AABEE]">
+                        <svg class="w-5 h-5 fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </a>
+                </div>
+                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center overflow-hidden">
+                    <img src="assets/image/urban.svg" alt="Urban Awards" class="w-full h-full object-cover">
+                </div>
+                <div class="text-white font-bold">
+                    <p class="mb-1"><a href="tel:+74742516393">+7 (4742) 51-63-93</a></p>
+                    <p>улица М.И. Неделина, 6</p>
+                </div>
+                <div class="text-[#8C949B] text-xs mt-4">
+                    <p>ООО «РСС» ИНН: 4826152621, ОГРН: 1224800000754</p>
+                    <p class="mt-2">Юридический адрес: 398016, г. Липецк, ул. Космонавтов, д. 26/1, этаж 2, помещ./каб. 1/8</p>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -172,19 +210,19 @@
                         </div>
                         <h4 class="dynamic-cardtext-font text-white font-unbounded mb-6">Банки партнеры</h4>
                         <div class="grid md:grid-cols-5 sm:grid-cols-4 ss:grid-cols-3  sx:grid-cols-2 gap-4">
-                            <img src="assets/image/banks/sber.png" alt="sber">
-                            <img src="assets/image/banks/vtb.png" alt="vtb">
-                            <img src="assets/image/banks/RF.png" alt="RF">
-                            <img src="assets/image/banks/rosbank.png" alt="rosbank">
-                            <img src="assets/image/banks/otkritie.png" alt="otkritie">
-                            <img src="assets/image/banks/rosselxozbank.png" alt="rosselxozbank">
-                            <img src="assets/image/banks/alfaBank.png" alt="alfaBank">
-                            <img src="assets/image/banks/uralsib.png" alt="uralsib">
-                            <img src="assets/image/banks/promsvyazbank.png" alt="promsvyazbank">
-                            <img src="assets/image/banks/gazprombank.png" alt="gazprombank">
+                            <img src="assets/image/banks/sber.webp" alt="sber">
+                            <img src="assets/image/banks/vtb.webp" alt="vtb">
+                            <img src="assets/image/banks/RF.webp" alt="RF">
+                            <img src="assets/image/banks/rosbank.webp" alt="rosbank">
+                            <img src="assets/image/banks/otkritie.webp" alt="otkritie">
+                            <img src="assets/image/banks/rosselxozbank.webp" alt="rosselxozbank">
+                            <img src="assets/image/banks/alfaBank.webp" alt="alfaBank">
+                            <img src="assets/image/banks/uralsib.webp" alt="uralsib">
+                            <img src="assets/image/banks/promsvyazbank.webp" alt="promsvyazbank">
+                            <img src="assets/image/banks/gazprombank.webp" alt="gazprombank">
                         </div>
                     </div>
-                    <button class="bg-red-button font-semibold px-8 py-2.5 text-white rounded hover:bg-red-700 transition-colors mt-12" data-modal="leave-request">Оставить заявку</button>
+                    <button class="bg-red-button font-semibold px-8 py-2.5 text-white rounded hover:bg-red-700 transition-colors mt-12 cursor-pointer" data-modal="leave-request" data-hidden-page="Оплата" data-hidden-context="Варианты покупки">Оставить заявку</button>
                 </div>
             </section>
 
@@ -238,18 +276,39 @@
     </footer>
 
     <!-- Scripts -->
-    <script type="module">
-        import { initMobileMenu } from './assets/js/mobile-menu.js';
-        import { PaymentModule } from './assets/js/modules/payment.js';
-
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transform translate-x-full transition-transform duration-300 lg:hidden">
+        <div class="bg-back-black-sections h-full w-[80%] ml-auto flex flex-col p-6 shadow-2xl">
+            <div class="flex justify-end mb-8">
+                <button id="mobile-menu-close" class="text-white">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <nav class="flex flex-col gap-4 text-xl font-bold text-white">
+                <a href="index.html" class="hover:text-red-500 transition-colors px-4 py-2">Проект</a>
+                <a href="income.html" class="hover:text-red-500 transition-colors px-4 py-2">Доходы</a>
+                <a href="lots/index.html" class="hover:text-red-500 transition-colors px-4 py-2">Лоты</a>
+                <a href="questions.html" class="hover:text-red-500 transition-colors px-4 py-2">Вопросы</a>
+                <a href="developer.html" class="hover:text-red-500 transition-colors px-4 py-2">Девелопер</a>
+                <a href="payment.html" class="text-red-500 px-4 py-2">Оплата</a>
+                <a href="contacts.html" class="hover:text-red-500 transition-colors px-4 py-2">Контакты</a>
+            </nav>
+            <div class="mt-auto">
+                 <button class="w-full bg-red-button font-semibold px-6 py-3 text-white rounded hover:bg-red-700 transition-colors cursor-pointer" data-modal="leave-request" data-hidden-page="Меню" data-hidden-context="Мобильное меню">
+                    Оставить заявку
+                </button>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="assets/js/app.js"></script>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
-            initMobileMenu();
-            new PaymentModule();
+            // Additional page-specific initialization if needed
         });
     </script>
     <!-- Modal + logic -->
-    <div id="modal-backdrop" class="fixed inset-0 bg-black/80 z-[60] hidden flex justify-center items-center backdrop-blur-sm">
-        <div class="bg-back-black-sections text-white p-6 md:p-8 rounded-lg max-w-md w-full mx-4 relative shadow-2xl">
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/80 z-[60] flex justify-center items-center backdrop-blur-sm transition-all duration-300 opacity-0 invisible pointer-events-none">
+        <div id="modal-content" class="rounded-2xl custom-modal bg-back-black-sections md:p-8 sx:p-5 transform scale-95 transition-all duration-300">
             <button id="modal-close" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
@@ -259,11 +318,11 @@
             <form class="flex flex-col gap-4" id="modal-form">
                 <div>
                     <label class="block mb-2 text-sm text-gray-300">Ваши данные</label>
-                    <input type="text" name="name" placeholder="ФИО" class="w-full bg-transparent border border-gray-600 p-3 rounded text-white focus:border-white focus:outline-none transition-colors" required>
+                    <input type="text" name="name" placeholder="ФИО" class="bg-black w-full border border-gray-600 p-3 rounded-lg text-white focus:border-white focus:outline-none transition-colors" required>
                 </div>
                 <div>
                     <label class="block mb-2 text-sm text-gray-300">Ваш телефон</label>
-                    <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" class="w-full bg-transparent border border-gray-600 p-3 rounded text-white focus:border-white focus:outline-none transition-colors" required>
+                    <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" class="bg-black w-full border border-gray-600 p-3 rounded-lg text-white focus:border-white focus:outline-none transition-colors" required>
                 </div>
                 
                 <div class="flex items-start gap-3 mt-2">
@@ -273,12 +332,11 @@
                     </label>
                 </div>
 
-                <button type="submit" class="bg-red-button text-white py-3 rounded font-bold hover:bg-red-700 transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                <button type="submit" class="bg-red-button text-white py-3 rounded font-bold hover:bg-red-700 transition-colors mt-2 disabled:opacity-50 cursor-pointer">
                     Оставить заявку
                 </button>
             </form>
         </div>
     </div>
-    <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>

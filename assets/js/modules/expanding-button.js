@@ -314,7 +314,7 @@ export class ExpandingButtonModule {
             const categoryId = cat.category_id || cat.category?.id || cat.id;
 
             html += `
-                <div class="bg-white p-5 rounded-lg relative group cursor-pointer hover:shadow-xl transition-all duration-300">
+                <div class="bg-white md:p-5 rounded-lg relative group cursor-pointer hover:shadow-xl transition-all duration-300">
                     ${statusHtml}
                     <div class="mb-5 relative aspect-[3/2.5] rounded-xl overflow-hidden bg-gray-200">
                         ${imageHtml}

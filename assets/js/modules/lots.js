@@ -72,7 +72,7 @@ export class LotsModule {
 
         this.categoriesContainer.innerHTML = this.categories.map(cat => `
             <button 
-                class="category-btn whitespace-nowrap px-4 py-2 text-white border-b-2 border-transparent hover:text-gray-300 transition-colors"
+                class="category-btn whitespace-nowrap px-4 py-2 text-white/70 hover:text-gray-300 transition-colors rounded-lg cursor-pointer"
                 data-id="${cat.id}"
             >
                 ${cat.name}
@@ -113,11 +113,11 @@ export class LotsModule {
         const buttons = this.categoriesContainer.querySelectorAll('.category-btn');
         buttons.forEach(btn => {
             if (btn.dataset.id == id) {
-                btn.classList.add('border-white');
-                btn.classList.remove('border-transparent');
+                btn.classList.add('border-rounded', 'bg-black', '!text-white');
+
             } else {
-                btn.classList.remove('border-white');
-                btn.classList.add('border-transparent');
+                btn.classList.remove('border-rounded', 'bg-black', '!text-white');
+ 
             }
         });
 

@@ -4,18 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Новость №1 | Stork Hotel</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        @theme {
+        --color-red-button: #CA1F26;
+        --color-back-black-sections: #1D1D1D;
+        --color-nearest-text: #616161;
+        --color-back-white-sections: #F5F5F5;
+        --color-description-text-color: #AEB4BB;
+        --color-place-bg: #902F2F;
+        --color-blue-bg: #6366F1;
+        --color-hover-blue: #4F46E5;
+        --color-disabled-bg: #DBDBDB;
+        --color-disabled-text: #8C949B;
+        --font-inter: 'Inter', sans-serif;
+        --font-unbounded: 'Unbounded', sans-serif;
+        
+        /* Breakpoints */
+        --breakpoint-sx: 275px;
+        --breakpoint-ss: 480px;
+        --breakpoint-sm: 640px;
+        --breakpoint-md: 769px;
+        --breakpoint-lg: 1025px;
+        --breakpoint-xl: 1280px;
+        --breakpoint-2xl: 1536px;
+        --breakpoint-3xl: 1920px;
+        --breakpoint-4xl: 2560px;
+        }
+
+        @layer utilities {
+            .container {
+                max-width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                
+                @media (min-width: 769px) {
+                    max-width: 1920px;
+                    padding-left: 3.75rem;
+                    padding-right: 3.75rem;
+                }
+            }
+        }
+    </style>
     <link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body class="bg-back-black-sections text-white font-inter">
 
     <!-- Header (Static Include) -->
     <header class="fixed w-full z-50 transition-all duration-300 bg-black/50 backdrop-blur-sm">
-        <div class="container mx-auto flex justify-between items-center px-4 md:px-15 py-[1.2rem]">
+        <div class="hidden lg:flex container mx-auto justify-between items-center px-4 md:px-15 py-[1.2rem]">
             <a href="../index.html" class="block font-bold text-xl">STORK</a>
-            <ul class="hidden lg:flex gap-4 font-semibold">
+            <ul class="flex gap-4 font-semibold">
                 <li><a href="../index.html" class="hover:text-gray-300">Главная</a></li>
                 <li><a href="index.html" class="hover:text-gray-300">Новости</a></li>
             </ul>
+        </div>
+
+        <!-- Mobile Nav Bar -->
+        <div class="lg:hidden px-4 py-3 flex justify-between items-center bg-white fixed w-full top-0 z-50 shadow-sm">
+             <button id="mobile-menu-toggle" class="text-black">
+                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+             </button>
+             <div class="flex gap-6 items-center">
+                <a href="https://yandex.ru/maps/-/CDdGV-3L" target="_blank" class="text-black">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                </a>
+                <a href="tel:+74742516393" class="text-black">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    </svg>
+                </a>
+             </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-[#1D1D1D] z-[60] transform translate-x-full transition-transform duration-300 flex flex-col h-full overflow-y-auto">
+            <div class="p-4 flex justify-end items-center">
+                <button id="mobile-menu-close" class="text-white p-2">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="px-6 flex flex-col gap-6 pb-8">
+                <nav class="flex flex-col gap-4 text-xl font-bold text-white">
+                    <a href="../index.html" class="hover:text-red-500 transition-colors px-4 py-2">Проект</a>
+                    <a href="../income.html" class="hover:text-red-500 transition-colors px-4 py-2">Доходы</a>
+                    <a href="../lots/index.html" class="hover:text-red-500 transition-colors px-4 py-2">Лоты</a>
+                    <a href="../questions.html" class="hover:text-red-500 transition-colors px-4 py-2">Вопросы</a>
+                    <a href="../developer.html" class="hover:text-red-500 transition-colors px-4 py-2">Девелопер</a>
+                    <a href="../payment.html" class="hover:text-red-500 transition-colors px-4 py-2">Оплата</a>
+                    <a href="../contacts.html" class="hover:text-red-500 transition-colors px-4 py-2">Контакты</a>
+                </nav>
+                
+                <button class="bg-red-button text-white font-bold py-3.5 rounded-lg w-full" data-modal="leave-request" data-hidden-page="MobileMenu" data-hidden-context="Button">
+                    Связаться с менеджером
+                </button>
+
+                <div class="flex gap-4">
+                    <a href="https://vk.com/stork_hotels" target="_blank" class="w-10 h-10 bg-[#2A2A2A] rounded-full flex items-center justify-center hover:bg-red-button transition-colors">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M19.95 21a9.95 9.95 0 0 1-4.29-2.22 10 10 0 0 1-2.22-4.29c-.05-.19-.08-.38-.08-.58 0-.3.12-.59.34-.8l1.72-1.72a.75.75 0 0 1 1.06 0l2.12 2.12a.75.75 0 0 1 0 1.06l-1.35 1.35c.18.57.43 1.11.74 1.62.31.51.68.99 1.11 1.43.43.43.91.8 1.43 1.11.51.31 1.05.56 1.62.74l1.35-1.35a.75.75 0 0 1 1.06 0l2.12 2.12a.75.75 0 0 1 0 1.06l-1.72 1.72c-.21.22-.5.34-.8.34-.2 0-.39-.03-.58-.08zM5.5 2C3.57 2 2 3.57 2 5.5v13C2 20.43 3.57 22 5.5 22h13c1.93 0 3.5-1.57 3.5-3.5V5.5C22 3.57 20.43 2 18.5 2h-13zm2.88 4.25a.63.63 0 0 1 .62.63v4.24l3.59-2.07a.62.62 0 0 1 .93.54v3.32a.62.62 0 0 1-.93.54l-3.59-2.07v4.24a.63.63 0 0 1-1.25 0V6.88a.63.63 0 0 1 .63-.63z"/></svg>
+                    </a>
+                    <a href="https://t.me/stork_hotels" target="_blank" class="w-10 h-10 bg-[#2A2A2A] rounded-full flex items-center justify-center hover:bg-red-button transition-colors">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.06-.14-.04-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .24z"/></svg>
+                    </a>
+                </div>
+
+                <div class="flex flex-col gap-2 text-white/60 text-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-black font-bold text-[10px] leading-none text-center">UA<br>2024</span>
+                        </div>
+                        <span>Финалист Urban Awards 2024</span>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-white text-lg font-bold mb-1">+7 (4742) 51-63-93</p>
+                        <p>г. Липецк, улица М.И. Неделина, 6</p>
+                    </div>
+                    <div class="mt-4 text-xs opacity-50">
+                        <p>ООО «РСС»</p>
+                        <p>ИНН: 4826152621</p>
+                        <p>ОГРН: 1224800000754</p>
+                        <p class="mt-2">Юридический адрес:</p>
+                        <p>398059, Липецкая обл., г. Липецк,</p>
+                        <p>ул. М.И. Неделина, д. 6, помещ. 3</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -53,5 +171,39 @@
         </div>
     </footer>
 
+    <!-- Modals (Hidden) -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/80 z-[60] flex justify-center items-center backdrop-blur-sm transition-all duration-300 opacity-0 invisible pointer-events-none">
+        <div id="modal-content" class="bg-back-black-sections text-white p-6 md:p-8 rounded-lg max-w-md w-full mx-4 relative shadow-2xl transform scale-95 transition-all duration-300">
+            <button id="modal-close" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-2xl md:text-3xl font-unbounded mb-2 uppercase">Форма обратной связи</h2>
+            <p id="modal-subtitle" class="text-gray-400 mb-6 text-sm md:text-base">Оставьте свои данные, чтобы получить наилучшее предложение</p>
+            
+            <form class="flex flex-col gap-4" id="modal-form">
+                <div>
+                    <label class="block mb-2 text-sm text-gray-300">Ваши данные</label>
+                    <input type="text" name="name" placeholder="ФИО" class="bg-black w-full border border-gray-600 p-3 rounded-lg text-white focus:border-white focus:outline-none transition-colors" required>
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm text-gray-300">Ваш телефон</label>
+                    <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" class="bg-black w-full border border-gray-600 p-3 rounded-lg text-white focus:border-white focus:outline-none transition-colors" required>
+                </div>
+                
+                <div class="flex items-start gap-3 mt-2">
+                    <input type="checkbox" id="privacy-check" class="mt-1 w-4 h-4 rounded border-gray-600 text-red-600 focus:ring-red-500 bg-transparent" checked required>
+                    <label for="privacy-check" class="text-xs text-gray-400 leading-tight">
+                        Я ознакомлен(-а) с <a href="#" class="underline hover:text-white">Политикой конфиденциальности</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="bg-red-button text-white py-3 rounded font-bold hover:bg-red-700 transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Оставить заявку
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../assets/js/app.js"></script>
 </body>
 </html>

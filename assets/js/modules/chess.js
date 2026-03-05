@@ -8,8 +8,88 @@ export class ChessModule {
         this.blocks = [];
         this.chessData = [];
         
+        // Colors configuration
+        this.colors = {
+            status: {
+                'svobodno': { bg: '#22C55E', text: '#ffffff', label: 'свободно' },
+                'bron': { bg: '#78350f', text: '#ffffff', label: 'бронь' },
+                'prodan': { bg: '#7f1d1d', text: '#ffffff', label: 'продан' }
+            },
+            type: {
+                'A': { bg: '#7c3aed', label: 'Апартаменты' },
+                'K': { bg: '#06b6d4', label: 'Келлер' },
+                'KP': { bg: '#ea580c', label: 'Коммерческие Помещения' },
+                'H': { bg: '#dc2626', label: 'Номера' },
+                'P': { bg: '#2563eb', label: 'Парковка' }
+            }
+        };
+
         if (this.container) {
+            this.injectStyles();
+            this.createTooltip();
             this.init();
+        }
+    }
+
+    createTooltip() {
+        this.tooltip = document.createElement('div');
+        this.tooltip.className = 'fixed bg-white text-black text-xs p-3 rounded shadow-xl z-[9999] hidden pointer-events-none transition-opacity duration-200 opacity-0 border border-gray-100';
+        document.body.appendChild(this.tooltip);
+    }
+
+    showTooltip(lot, x, y) {
+        if (!this.tooltip) return;
+
+        this.tooltip.innerHTML = `
+            <div class="font-bold text-sm mb-1">Лот №${lot.number_object}</div>
+            <div class="flex justify-between mb-0.5 gap-4"><span>Этаж:</span> <span class="font-medium">${lot.floor}</span></div>
+            <div class="flex justify-between mb-0.5 gap-4"><span>Площадь:</span> <span class="font-medium">${lot.area} м²</span></div>
+            ${lot.price ? `<div class="flex justify-between font-bold text-red-600 mt-1 gap-4"><span>Цена:</span> <span>${Number(lot.price).toLocaleString('ru-RU')} ₽</span></div>` : ''}
+            <div class="text-gray-500 mt-1 italic text-[10px]">Нажмите для деталей</div>
+        `;
+
+        this.tooltip.classList.remove('hidden');
+        
+        // Calculate position to keep tooltip on screen
+        const rect = this.tooltip.getBoundingClientRect();
+        let left = x - rect.width / 2;
+        let top = y - rect.height - 10;
+
+        // Prevent overflow
+        if (left < 10) left = 10;
+        if (left + rect.width > window.innerWidth - 10) left = window.innerWidth - rect.width - 10;
+        if (top < 10) top = y + 20; // Show below if not enough space above
+
+        this.tooltip.style.left = `${left}px`;
+        this.tooltip.style.top = `${top}px`;
+        
+        requestAnimationFrame(() => {
+            this.tooltip.classList.remove('opacity-0');
+        });
+    }
+
+    hideTooltip() {
+        if (!this.tooltip) return;
+        this.tooltip.classList.add('opacity-0');
+        setTimeout(() => {
+            if (this.tooltip.classList.contains('opacity-0')) {
+                this.tooltip.classList.add('hidden');
+            }
+        }, 200);
+    }
+
+    injectStyles() {
+        if (!document.getElementById('chess-custom-styles')) {
+            const style = document.createElement('style');
+            style.id = 'chess-custom-styles';
+            style.textContent = `
+                .custom-scrollbar::-webkit-scrollbar { height: 8px; width: 8px; }
+                .custom-scrollbar::-webkit-scrollbar-track { background: #2d2d2d; border-radius: 4px; }
+                .custom-scrollbar::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+                .custom-scrollbar { scrollbar-width: thin; scrollbar-color: #4b5563 #2d2d2d; }
+            `;
+            document.head.appendChild(style);
         }
     }
 
@@ -27,8 +107,8 @@ export class ChessModule {
 
     renderSkeleton() {
         this.container.innerHTML = `
-            <div class="animate-pulse">
-                <div class="h-10 bg-gray-700 rounded mb-4 w-full"></div>
+            <div class="animate-pulse p-4">
+                <div class="h-10 bg-gray-700 rounded mb-4 w-1/4"></div>
                 <div class="space-y-3">
                     <div class="h-20 bg-gray-700 rounded w-full"></div>
                     <div class="h-20 bg-gray-700 rounded w-full"></div>
@@ -39,22 +119,28 @@ export class ChessModule {
     }
 
     async fetchTablets() {
-        // Fetch blocks/categories
         const data = await fetchApi('/chess/tablet');
         if (data) {
             this.blocks = data.blocks;
-            // Default to first block
             if (this.blocks.length > 0) {
                 this.currentBlockId = this.blocks[0].id;
-                this.renderBlockSelector();
+                this.renderLayout();
                 await this.fetchChess(this.currentBlockId);
             }
         }
     }
 
     async fetchChess(blockId) {
-        this.container.querySelector('.chess-grid')?.remove();
-        // Show loading/skeleton for grid
+        const gridContainer = this.container.querySelector('#chess-grid-container');
+        if (gridContainer) {
+            gridContainer.innerHTML = `
+                <div class="animate-pulse space-y-4">
+                    <div class="h-16 bg-gray-700/50 rounded w-full"></div>
+                    <div class="h-16 bg-gray-700/50 rounded w-full"></div>
+                    <div class="h-16 bg-gray-700/50 rounded w-full"></div>
+                </div>
+            `;
+        }
         
         const data = await fetchApi('/chess', { block_id: blockId });
         if (data) {
@@ -63,31 +149,99 @@ export class ChessModule {
         }
     }
 
-    renderBlockSelector() {
-        // Find or create selector container
-        let selector = document.getElementById('block-selector');
-        if (!selector) {
-            selector = document.createElement('div');
-            selector.id = 'block-selector';
-            selector.className = 'flex gap-4 mb-6 overflow-x-auto';
-            this.container.prepend(selector);
-        }
+    renderLayout() {
+        this.container.innerHTML = '';
+        this.container.className = 'flex flex-col md:flex-row min-h-[600px] text-white';
 
-        selector.innerHTML = this.blocks.map(block => `
-            <button 
-                class="px-4 py-2 rounded-lg transition-colors ${block.id === this.currentBlockId ? 'bg-red-button text-white' : 'bg-back-white-sections text-black hover:bg-gray-200'}"
-                data-id="${block.id}"
-            >
-                Блок ${block.name}
-            </button>
-        `).join('');
+        // Sidebar
+        const sidebar = document.createElement('div');
+        sidebar.className = 'w-full md:w-64 flex-shrink-0 bg-[#1D1D1D] p-4 border-r border-gray-800 flex flex-col gap-6';
+        
+        // 1. Block Selector
+        const blockSelector = document.createElement('div');
+        blockSelector.innerHTML = `
+            <div class="text-sm text-gray-400 mb-2 font-medium">ВЫБОР БЛОКА</div>
+            <div class="flex flex-col gap-2">
+                ${this.blocks.map(block => `
+                    <button 
+                        class="block-btn w-full text-left px-4 py-2 rounded transition-colors ${block.id === this.currentBlockId ? 'bg-red-button text-white' : 'bg-[#2A2A2A] text-gray-300 hover:bg-[#333]'}"
+                        data-id="${block.id}"
+                    >
+                        Блок ${block.name}
+                    </button>
+                `).join('')}
+            </div>
+        `;
+        sidebar.appendChild(blockSelector);
 
-        selector.querySelectorAll('button').forEach(btn => {
+        // 2. Helper Text
+        const helperText = document.createElement('div');
+        helperText.className = 'text-sm text-gray-500 italic';
+        helperText.textContent = 'Наведите курсор на ячейку для информации. Кликните для перехода к лоту.';
+        sidebar.appendChild(helperText);
+
+        // 3. Status Legend
+        const statusLegend = document.createElement('div');
+        statusLegend.innerHTML = `
+            <div class="text-sm text-gray-400 mb-2 font-medium">СТАТУСЫ</div>
+            <div class="flex flex-col gap-2">
+                ${Object.entries(this.colors.status).map(([key, val]) => `
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded" style="background-color: ${val.bg}"></div>
+                        <span class="text-sm text-gray-300">${val.label}</span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        sidebar.appendChild(statusLegend);
+
+        // 4. Type Legend
+        const typeLegend = document.createElement('div');
+        typeLegend.innerHTML = `
+            <div class="text-sm text-gray-400 mb-2 font-medium">ТИПЫ ПОМЕЩЕНИЙ</div>
+            <div class="flex flex-col gap-2">
+                ${Object.entries(this.colors.type).map(([key, val]) => `
+                    <div class="flex items-center gap-2">
+                        <div class="w-6 h-6 rounded flex items-center justify-center text-xs font-bold text-white" style="background-color: ${val.bg}">${key}</div>
+                        <span class="text-sm text-gray-300">${val.label}</span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        sidebar.appendChild(typeLegend);
+
+        // Main Content Area
+        const mainContent = document.createElement('div');
+        mainContent.className = 'flex-1 flex flex-col min-w-0 bg-[#121212]';
+        
+        // Header
+        const header = document.createElement('div');
+        header.className = 'p-4 border-b border-gray-800 flex justify-between items-center';
+        header.innerHTML = `<h2 class="text-xl font-bold font-unbounded">БЛОК ${this.blocks.find(b => b.id === this.currentBlockId)?.name}</h2>`;
+        mainContent.appendChild(header);
+
+        // Grid Container
+        const gridContainer = document.createElement('div');
+        gridContainer.id = 'chess-grid-container';
+        gridContainer.className = 'flex-1 overflow-auto custom-scrollbar p-4';
+        mainContent.appendChild(gridContainer);
+
+        this.container.appendChild(sidebar);
+        this.container.appendChild(mainContent);
+
+        // Event Listeners for Block Selector
+        sidebar.querySelectorAll('.block-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const id = parseInt(e.target.dataset.id);
+                const id = parseInt(e.currentTarget.dataset.id);
                 if (id !== this.currentBlockId) {
                     this.currentBlockId = id;
-                    this.renderBlockSelector(); // Re-render to update active class
+                    // Update buttons UI
+                    sidebar.querySelectorAll('.block-btn').forEach(b => {
+                        b.className = `block-btn w-full text-left px-4 py-2 rounded transition-colors ${parseInt(b.dataset.id) === id ? 'bg-red-button text-white' : 'bg-[#2A2A2A] text-gray-300 hover:bg-[#333]'}`;
+                    });
+                    // Update Header
+                    header.querySelector('h2').textContent = `БЛОК ${this.blocks.find(b => b.id === id)?.name}`;
+                    // Fetch Data
                     this.fetchChess(id);
                 }
             });
@@ -95,26 +249,27 @@ export class ChessModule {
     }
 
     renderGrid() {
-        // Remove existing grid
-        const existingGrid = this.container.querySelector('.chess-grid');
-        if (existingGrid) existingGrid.remove();
+        const container = this.container.querySelector('#chess-grid-container');
+        if (!container) return;
 
+        container.innerHTML = '';
+        
         const grid = document.createElement('div');
-        grid.className = 'chess-grid flex flex-col gap-2.5 overflow-x-auto pb-4';
+        grid.className = 'flex flex-col gap-1 pb-4';
 
         this.chessData.forEach(floor => {
             const row = document.createElement('div');
-            row.className = 'flex items-center relative min-w-max';
+            row.className = 'flex items-stretch gap-4 hover:bg-white/5 transition-colors p-1 rounded';
             
-            // Floor number
-            const floorNum = document.createElement('span');
-            floorNum.className = `absolute text-white font-bold left-2 z-10`;
+            // Floor Number (Sticky)
+            const floorNum = document.createElement('div');
+            floorNum.className = 'w-10 flex-shrink-0 flex items-center justify-center font-bold text-gray-400 text-lg border-r border-gray-700';
             floorNum.textContent = floor.floor;
             row.appendChild(floorNum);
 
-            // Lots container
+            // Lots
             const lotsContainer = document.createElement('div');
-            lotsContainer.className = 'flex gap-2.5 pl-12';
+            lotsContainer.className = 'flex flex-nowrap gap-2 flex-1 overflow-x-auto custom-scrollbar pb-2';
 
             floor.lots.forEach(lot => {
                 const lotEl = this.createLotElement(lot);
@@ -125,45 +280,67 @@ export class ChessModule {
             grid.appendChild(row);
         });
 
-        this.container.appendChild(grid);
+        container.appendChild(grid);
     }
 
     createLotElement(lot) {
-        const link = document.createElement('a');
-        link.href = `/lots/detail.html?id=${lot.id}`; // Updated to standard query param
-        link.className = 'block relative w-28 h-16 rounded-lg grid grid-cols-2 gap-0.5 p-2.5 transition-transform hover:scale-105';
+        // Support both Latin and Cyrillic slugs for 'free' status
+        const isFree = ['svobodno', 'свободно'].includes(lot.status.slug);
+        const link = document.createElement(isFree ? 'a' : 'div');
         
-        // Background color based on status/category
-        let bgColor = '#DBDBDB'; // Default/Disabled
-        if (lot.status.slug === 'svobodno') { // Verify slug from API response
-             bgColor = lot.status.color ? lot.status.color + '80' : '#4ade80'; // Hex + alpha
-        } else if (lot.status.slug === 'bron') {
-             bgColor = '#fbbf24';
-        } else if (lot.status.slug === 'prodan') {
-             bgColor = '#f87171';
+        if (isFree) {
+            link.href = `/lots/detail.html?id=${lot.id}`;
         }
         
-        // Actually, logic from vue: 
-        // if status == 'свободно' -> color + 50 (alpha?)
-        // Let's rely on inline styles or classes.
+        // Base classes
+        let classes = 'relative w-28 h-14 rounded overflow-hidden flex-shrink-0 transition-transform hover:z-10 group';
         
-        link.style.backgroundColor = lot.status.color || '#333';
+        if (isFree) {
+            classes += ' cursor-pointer hover:scale-105 hover:shadow-lg';
+        } else {
+            classes += ' cursor-not-allowed opacity-80';
+        }
         
-        // Content
+        link.className = classes;
+
+        // Determine colors
+        // Use color from API if available, otherwise fallback to local config or default
+        let bgColor = lot.status.color;
+        if (!bgColor) {
+            const statusConfig = this.colors.status[lot.status.slug];
+            bgColor = statusConfig ? statusConfig.bg : '#333';
+        }
+        // Add 50 for transparency
+        if (bgColor && bgColor.startsWith('#') && bgColor.length === 7) {
+            bgColor += '50';
+        }
+        
+        // Use type based on category/subcategory if available, or fallback
+        const typeKey = lot.sub_category?.abbreviation || lot.category?.abbreviation || '?';
+        const typeConfig = this.colors.type[typeKey] || { bg: '#555', label: 'Другое' };
+
+        link.style.backgroundColor = bgColor;
+
         link.innerHTML = `
-            <div class="text-xs font-bold text-white/90" style="background-color: ${lot.category?.color}">${lot.sub_category?.abbreviation || lot.category?.abbreviation || '?'}</div>
-            <div class="text-xs text-right text-white">${lot.number_object}</div>
-            <div class="col-span-2 text-xs text-white truncate">${lot.category?.name}</div>
+            <div class="h-full flex flex-col justify-between p-2 relative">
+                <div class="flex justify-between items-start">
+                    <span class="text-[10px] font-bold px-1 rounded text-white" style="background-color: ${typeConfig.bg}">${typeKey}</span>
+                    <span class="text-xs font-bold text-white/90">${lot.number_object}</span>
+                </div>
+                <div class="text-[10px] text-white/80 truncate">${lot.category?.name || ''}</div>
+            </div>
         `;
 
-        // Tooltip logic (simple title for now, or custom)
-        link.title = `Блок: ${lot.blocks?.[0]?.name}, Этаж: ${lot.floor}, Площадь: ${lot.area} м²`;
+        // Tooltip
+        if (isFree) {
+            link.addEventListener('mouseenter', (e) => {
+                const rect = link.getBoundingClientRect();
+                this.showTooltip(lot, rect.left + rect.width / 2, rect.top);
+            });
 
-        // Add overlay if sold/reserved?
-        if (lot.status.slug !== 'свободно' && lot.status.slug !== 'svobodno') { // Check both cyrillic and latin
-             // Maybe disable link?
-             // link.href = 'javascript:void(0)';
-             // link.classList.add('cursor-not-allowed', 'opacity-70');
+            link.addEventListener('mouseleave', () => {
+                this.hideTooltip();
+            });
         }
 
         return link;

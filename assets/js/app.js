@@ -55,35 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalForm = document.getElementById('modal-form');
   let activeModalType = null;
 
-  modalTriggers.forEach(trigger => {
-    trigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        const type = trigger.dataset.modal;
-        activeModalType = type;
-        
-        // Update subtitle based on type
-        if (modalSubtitle) {
-            if (type === 'presentation') {
-                modalSubtitle.textContent = 'Оставьте свои данные, чтобы получить презентацию';
-            } else if (type === 'leave-request') {
-                modalSubtitle.textContent = 'Оставьте свои данные, чтобы оставить заявку';
-            } else {
-                modalSubtitle.textContent = 'Оставьте свои данные, чтобы получить наилучшее предложение';
-            }
-        }
-        
-        if (modalBackdrop) {
-            modalBackdrop.classList.remove('opacity-0', 'invisible', 'pointer-events-none');
-            modalBackdrop.classList.add('opacity-100', 'visible', 'pointer-events-auto');
-            
-            if (modalContent) {
-                modalContent.classList.remove('scale-95');
-                modalContent.classList.add('scale-100');
-            }
-        }
-    });
-  });
-
   const closeModal = () => {
       if (modalBackdrop) {
           modalBackdrop.classList.remove('opacity-100', 'visible', 'pointer-events-auto');
@@ -93,9 +64,78 @@ document.addEventListener('DOMContentLoaded', () => {
               modalContent.classList.remove('scale-100');
               modalContent.classList.add('scale-95');
           }
+
+          // Clean up dynamic hidden inputs
+          if (modalForm) {
+              const dynamicInputs = modalForm.querySelectorAll('.dynamic-hidden-input');
+              dynamicInputs.forEach(input => input.remove());
+          }
       }
       activeModalType = null;
   };
+
+  // Event delegation for modal triggers
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-modal]');
+    if (!trigger) return;
+    
+    e.preventDefault();
+    const type = trigger.dataset.modal;
+    activeModalType = type;
+    
+    // Update subtitle based on type
+    if (modalSubtitle) {
+        if (type === 'presentation') {
+            modalSubtitle.textContent = 'Оставьте свои данные, чтобы получить презентацию';
+        } else if (type === 'leave-request') {
+            modalSubtitle.textContent = 'Оставьте свои данные, чтобы оставить заявку';
+        } else {
+            modalSubtitle.textContent = 'Оставьте свои данные, чтобы получить наилучшее предложение';
+        }
+    }
+
+    // Add hidden fields
+    if (modalForm) {
+        const addHidden = (name, value) => {
+            // Check if input with this name already exists (static or dynamic)
+            let input = modalForm.querySelector(`input[name="${name}"]`);
+            if (!input) {
+                input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                input.classList.add('dynamic-hidden-input');
+                modalForm.appendChild(input);
+            } else if (!input.classList.contains('dynamic-hidden-input')) {
+                // If static input exists, just update its value
+                // But we don't mark it dynamic so it stays
+            } else {
+                // If dynamic input exists (shouldn't happen with cleanup, but just in case)
+            }
+            input.value = value;
+        };
+
+        addHidden('form_type', type);
+
+        // Add other hidden fields from data-hidden-* attributes
+        Object.keys(trigger.dataset).forEach(key => {
+            if (key.startsWith('hidden')) {
+                let paramName = key.replace(/^hidden/, '');
+                paramName = paramName.charAt(0).toLowerCase() + paramName.slice(1);
+                addHidden(paramName, trigger.dataset[key]);
+            }
+        });
+    }
+    
+    if (modalBackdrop) {
+        modalBackdrop.classList.remove('opacity-0', 'invisible', 'pointer-events-none');
+        modalBackdrop.classList.add('opacity-100', 'visible', 'pointer-events-auto');
+        
+        if (modalContent) {
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }
+    }
+  });
 
   if (modalClose && modalBackdrop) {
       modalClose.addEventListener('click', closeModal);
@@ -280,6 +320,29 @@ storkSlides.forEach((slide, idx) => {
 // Pay Tabs Logic
 const payTabBtns = document.querySelectorAll('.pay-tab-btn');
 const payTabContents = document.querySelectorAll('.pay-tab-content');
+
+// Helper to update hidden fields based on tab
+const updateTabHiddenFields = (tabId, btn) => {
+    const section = btn.closest('section');
+    if (!section) return;
+    
+    const modalTrigger = section.querySelector('[data-modal="leave-request"]');
+    if (modalTrigger) {
+        const purchaseType = tabId === 'full' ? '100% оплата' : 'Рассрочка';
+        modalTrigger.dataset.hiddenPurchaseType = purchaseType;
+        modalTrigger.dataset.hiddenContext = 'Варианты покупки';
+    }
+};
+
+// Initialize first tab state
+if (payTabBtns.length > 0) {
+    const activeBtn = document.querySelector('.pay-tab-btn.bg-white') || payTabBtns[0];
+    if (activeBtn) {
+        const tabId = activeBtn.getAttribute('data-tab');
+        updateTabHiddenFields(tabId, activeBtn);
+    }
+}
+
 payTabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         payTabBtns.forEach(b => {
@@ -298,11 +361,38 @@ payTabBtns.forEach(btn => {
             content.classList.remove('hidden');
             content.classList.add('block');
         }
+        
+        // Update hidden fields
+        updateTabHiddenFields(tabId, btn);
     });
 });
 
 
+const video = document.getElementById('hero-video');
+const hlsUrl = 'assets/video/intro.m3u8'; 
 
+if (!video) return;
+// Safari/iOS поддерживает HLS нативно
+if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = hlsUrl;
+}
+// Chrome/Firefox — через hls.js
+else if (Hls.isSupported()) {
+    const hls = new Hls({
+        lowLatencyMode: false,  // для VOD
+        backBufferLength: 90    // экономим память
+    });
+    hls.loadSource(hlsUrl);
+    hls.attachMedia(video);
+    
+    // Цикл для hero
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play();
+    });
+}
+else {
+    console.error('HLS не поддерживается');
+}
 
 
 
